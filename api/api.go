@@ -5,6 +5,7 @@ package api
 import (
 	"errors"
 	"fmt"
+	"io"
 
 	"gotoolkit/internal/codec"
 )
@@ -46,6 +47,42 @@ func (o Options) validate() error {
 
 // Encode 把灰度图编码成指定格式。
 func Encode(img *Image, opt Options) ([]byte, error) {
+	src, err := prepare(img, opt)
+	if err != nil {
+		return nil, err
+	}
+	switch opt.Format {
+	case "pgm":
+		return codec.EncodePGM(src.W, src.H, src.Pix)
+	case "bmp":
+		return codec.EncodeBMP(src.W, src.H, src.Pix)
+	default:
+		return codec.EncodeRLE(src.W, src.H, src.Pix)
+	}
+}
+
+// EncodeTo 把编码结果流式写入 w。大图用它可避免整块输出缓冲驻留内存；
+// 输出字节与 Encode 完全一致。
+func EncodeTo(w io.Writer, img *Image, opt Options) error {
+	if w == nil {
+		return fmt.Errorf("%w: 输出为空", ErrBadOption)
+	}
+	src, err := prepare(img, opt)
+	if err != nil {
+		return err
+	}
+	switch opt.Format {
+	case "pgm":
+		return codec.EncodePGMTo(w, src.W, src.H, src.Pix)
+	case "bmp":
+		return codec.EncodeBMPTo(w, src.W, src.H, src.Pix)
+	default:
+		return codec.EncodeRLETo(w, src.W, src.H, src.Pix)
+	}
+}
+
+// prepare 校验参数并应用增益，返回真正要编码的图。
+func prepare(img *Image, opt Options) (*Image, error) {
 	if img == nil {
 		return nil, ErrBadSize
 	}
@@ -58,18 +95,10 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	if err := opt.validate(); err != nil {
 		return nil, err
 	}
-	src := img
 	if opt.Gain != 0 {
-		src = applyGain(img, opt.Gain)
+		return applyGain(img, opt.Gain), nil
 	}
-	switch opt.Format {
-	case "pgm":
-		return codec.EncodePGM(src.W, src.H, src.Pix)
-	case "bmp":
-		return codec.EncodeBMP(src.W, src.H, src.Pix)
-	default:
-		return codec.EncodeRLE(src.W, src.H, src.Pix)
-	}
+	return img, nil
 }
 
 // Decode 把字节流解码成灰度图。

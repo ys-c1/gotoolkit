@@ -3,17 +3,25 @@ package codec
 import (
 	"encoding/binary"
 	"errors"
+	"io"
 )
 
-// EncodeRLE 输出自定义游程格式：GTR1 + 宽高 + (计数, 值) 序列。
-func EncodeRLE(w, h int, pix []uint8) ([]byte, error) {
-	if w <= 0 || h <= 0 || len(pix) != w*h {
-		return nil, errors.New("画幅或像素数不匹配")
-	}
-	out := make([]byte, 8, 8+len(pix)*2)
+// rleHeader 输出 GTR1 + 宽高。
+func rleHeader(w, h int) []byte {
+	out := make([]byte, 8)
 	copy(out[0:], "GTR1")
 	binary.LittleEndian.PutUint16(out[4:], uint16(w))
 	binary.LittleEndian.PutUint16(out[6:], uint16(h))
+	return out
+}
+
+// EncodeRLE 输出自定义游程格式：GTR1 + 宽高 + (计数, 值) 序列。
+func EncodeRLE(w, h int, pix []uint8) ([]byte, error) {
+	if err := checkSize(w, h, pix); err != nil {
+		return nil, err
+	}
+	out := make([]byte, 8, 8+len(pix)*2)
+	copy(out, rleHeader(w, h))
 	i := 0
 	for i < len(pix) {
 		j := i
@@ -24,6 +32,30 @@ func EncodeRLE(w, h int, pix []uint8) ([]byte, error) {
 		i = j
 	}
 	return out, nil
+}
+
+// EncodeRLETo 把游程逐段写入 w，不保留整块输出缓冲。
+func EncodeRLETo(dst io.Writer, w, h int, pix []uint8) error {
+	if err := checkSize(w, h, pix); err != nil {
+		return err
+	}
+	if _, err := dst.Write(rleHeader(w, h)); err != nil {
+		return err
+	}
+	var pair [2]byte
+	i := 0
+	for i < len(pix) {
+		j := i
+		for j < len(pix) && pix[j] == pix[i] && j-i < 255 {
+			j++
+		}
+		pair[0], pair[1] = uint8(j-i), pix[i]
+		if _, err := dst.Write(pair[:]); err != nil {
+			return err
+		}
+		i = j
+	}
+	return nil
 }
 
 // DecodeRLE 解析游程格式。

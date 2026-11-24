@@ -52,6 +52,38 @@ func TestGoldenBytes(t *testing.T) {
 	}
 }
 
+func TestEncodeToMatchesEncode(t *testing.T) {
+	for _, f := range []string{"pgm", "bmp", "rle"} {
+		for _, gain := range []int{0, 37, -25} {
+			img := sample()
+			want, err := Encode(img, Options{Format: f, Gain: gain})
+			if err != nil {
+				t.Fatalf("%s 编码失败: %v", f, err)
+			}
+			var buf bytes.Buffer
+			if err := EncodeTo(&buf, img, Options{Format: f, Gain: gain}); err != nil {
+				t.Fatalf("%s EncodeTo 失败: %v", f, err)
+			}
+			if !bytes.Equal(buf.Bytes(), want) {
+				t.Fatalf("%s gain=%d 流式输出与 Encode 不逐字节一致", f, gain)
+			}
+		}
+	}
+}
+
+func TestEncodeToRejects(t *testing.T) {
+	img := sample()
+	if err := EncodeTo(nil, img, Options{Format: "pgm"}); err == nil {
+		t.Fatal("空 writer 应报错")
+	}
+	if err := EncodeTo(&bytes.Buffer{}, &Image{W: 0, H: 1}, Options{Format: "pgm"}); err == nil {
+		t.Fatal("画幅为零应报错")
+	}
+	if err := EncodeTo(&bytes.Buffer{}, img, Options{Format: "tga"}); err == nil {
+		t.Fatal("未知格式应报错")
+	}
+}
+
 func TestRejects(t *testing.T) {
 	img := sample()
 	if _, err := Encode(img, Options{Format: "tga"}); err == nil {

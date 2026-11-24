@@ -3,17 +3,15 @@ package codec
 import (
 	"encoding/binary"
 	"errors"
+	"io"
 )
 
-// EncodeBMP 输出 24 位灰度 BMP（三通道同值），行按 4 字节对齐，自底向上。
-func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
-	if w <= 0 || h <= 0 || len(pix) != w*h {
-		return nil, errors.New("画幅或像素数不匹配")
-	}
+// bmpHeader 填好 54 字节文件头与信息头。
+func bmpHeader(w, h int) []byte {
 	rowSize := (w*3 + 3) &^ 3
 	dataSize := rowSize * h
 	total := 54 + dataSize
-	out := make([]byte, total)
+	out := make([]byte, 54)
 	copy(out[0:], "BM")
 	binary.LittleEndian.PutUint32(out[2:], uint32(total))
 	binary.LittleEndian.PutUint32(out[10:], 54)
@@ -23,6 +21,17 @@ func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
 	binary.LittleEndian.PutUint16(out[26:], 1)
 	binary.LittleEndian.PutUint16(out[28:], 24)
 	binary.LittleEndian.PutUint32(out[34:], uint32(dataSize))
+	return out
+}
+
+// EncodeBMP 输出 24 位灰度 BMP（三通道同值），行按 4 字节对齐，自底向上。
+func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
+	if err := checkSize(w, h, pix); err != nil {
+		return nil, err
+	}
+	rowSize := (w*3 + 3) &^ 3
+	out := make([]byte, 54+rowSize*h)
+	copy(out, bmpHeader(w, h))
 	for y := 0; y < h; y++ {
 		srcRow := (h - 1 - y) * w
 		base := 54 + y*rowSize
@@ -34,6 +43,34 @@ func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
 		}
 	}
 	return out, nil
+}
+
+// EncodeBMPTo 把 BMP 逐行写入 w，只保留一行输出缓冲。
+func EncodeBMPTo(dst io.Writer, w, h int, pix []uint8) error {
+	if err := checkSize(w, h, pix); err != nil {
+		return err
+	}
+	if _, err := dst.Write(bmpHeader(w, h)); err != nil {
+		return err
+	}
+	rowSize := (w*3 + 3) &^ 3
+	row := make([]byte, rowSize)
+	for y := 0; y < h; y++ {
+		srcRow := (h - 1 - y) * w
+		for x := 0; x < w; x++ {
+			v := pix[srcRow+x]
+			row[x*3] = v
+			row[x*3+1] = v
+			row[x*3+2] = v
+		}
+		for i := w * 3; i < rowSize; i++ {
+			row[i] = 0
+		}
+		if _, err := dst.Write(row); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // DecodeBMP 解析本仓库自己产出的 24 位 BMP。

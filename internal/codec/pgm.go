@@ -3,17 +3,38 @@ package codec
 import (
 	"errors"
 	"fmt"
+	"io"
 )
+
+func checkSize(w, h int, pix []uint8) error {
+	if w <= 0 || h <= 0 || len(pix) != w*h {
+		return errors.New("画幅或像素数不匹配")
+	}
+	return nil
+}
 
 // EncodePGM 输出 P5 灰度。
 func EncodePGM(w, h int, pix []uint8) ([]byte, error) {
-	if w <= 0 || h <= 0 || len(pix) != w*h {
-		return nil, errors.New("画幅或像素数不匹配")
+	if err := checkSize(w, h, pix); err != nil {
+		return nil, err
 	}
-	out := make([]byte, 0, 15+w*h)
-	out = append(out, []byte(fmt.Sprintf("P5\n%d %d\n255\n", w, h))...)
+	head := fmt.Sprintf("P5\n%d %d\n255\n", w, h)
+	out := make([]byte, 0, len(head)+len(pix))
+	out = append(out, head...)
 	out = append(out, pix...)
 	return out, nil
+}
+
+// EncodePGMTo 把 P5 灰度直接写入 w，不保留整块输出缓冲。
+func EncodePGMTo(w io.Writer, width, height int, pix []uint8) error {
+	if err := checkSize(width, height, pix); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "P5\n%d %d\n255\n", width, height); err != nil {
+		return err
+	}
+	_, err := w.Write(pix)
+	return err
 }
 
 // DecodePGM 解析 P5 灰度。
