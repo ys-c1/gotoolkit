@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle|dict --in F --out F [--gain N]")
 }
 
 func runEncode(args []string) int {
