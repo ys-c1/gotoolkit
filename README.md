@@ -14,3 +14,22 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 排布标志（行序 / 字节序 / 行对齐）
+
+`api.Options` 与 CLI 都支持三个正交标志，八种组合解出的图必须逐像素相同，
+且与不带标志的旧文件一致（零值 `Options` 与旧编码逐字节相同）：
+
+| 标志 | CLI | 取值 | 默认（旧行为） |
+| --- | --- | --- | --- |
+| `RowOrder` | `--row-order` | `down` / `up` | pgm、rle 为 `down`；bmp 为 `up` |
+| `ByteOrder` | `--byte-order` | `le` / `be` | `le`（pgm 头是 ASCII，此标志对 pgm 不生效） |
+| `RowAlign` | `--row-align` | `1` / `4` | pgm、rle 为 1；bmp 为 4 |
+
+映射表、逐行落点、不一致时如何点名未生效的标志，见 `docs/layout.md`。
+验证：`go run ./cmd/layoutcheck -samples testdata/samples`。
+
+```
+./build/gtk encode --format bmp --row-order down --byte-order be --row-align 4 --in a.pgm --out a.bmp
+```
+
