@@ -38,6 +38,12 @@ func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
 
 // DecodeBMP 解析本仓库自己产出的 24 位 BMP。
 func DecodeBMP(data []byte) (int, int, []uint8, error) {
+	w, h, pix, err := decodeBMP(data)
+	return w, h, pix, err
+}
+
+// decodeBMP 是 DecodeBMP 的内部版本（掩码路径复用同一套头部校验）。
+func decodeBMP(data []byte) (int, int, []uint8, error) {
 	if len(data) < 54 || string(data[0:2]) != "BM" {
 		return 0, 0, nil, errors.New("不是 BMP 流")
 	}
@@ -45,7 +51,7 @@ func DecodeBMP(data []byte) (int, int, []uint8, error) {
 	h := int(int32(binary.LittleEndian.Uint32(data[22:])))
 	bpp := int(binary.LittleEndian.Uint16(data[28:]))
 	off := int(binary.LittleEndian.Uint32(data[10:]))
-	if w <= 0 || h <= 0 || bpp != 24 {
+	if w <= 0 || h <= 0 || bpp != 24 || off < 54 {
 		return 0, 0, nil, errors.New("BMP 头非法")
 	}
 	rowSize := (w*3 + 3) &^ 3
@@ -61,4 +67,32 @@ func DecodeBMP(data []byte) (int, int, []uint8, error) {
 		}
 	}
 	return w, h, pix, nil
+}
+
+// EncodeBMPMasked 在 24 位 BMP 之后追加掩码尾段。
+// 像素保持三通道同值不变，透明信息只存在尾段里，解码可零误差还原原值。
+func EncodeBMPMasked(w, h int, pix, alpha []uint8, maskValues []uint8) ([]byte, error) {
+	if err := checkMaskArgs(w, h, pix, alpha, maskValues); err != nil {
+		return nil, err
+	}
+	body, err := EncodeBMP(w, h, pix)
+	if err != nil {
+		return nil, err
+	}
+	return append(body, buildMaskTrailer(maskValues, alpha)...), nil
+}
+
+// DecodeBMPMasked 解析带掩码尾段的 BMP，返回记录的掩码值、像素与 alpha。
+func DecodeBMPMasked(data []byte) (int, int, []uint8, []uint8, []uint8, error) {
+	w, h, pix, err := decodeBMP(data)
+	if err != nil {
+		return 0, 0, nil, nil, nil, err
+	}
+	off := int(binary.LittleEndian.Uint32(data[10:]))
+	rowSize := (w*3 + 3) &^ 3
+	vals, alpha, err := parseMaskTrailer(data, off+rowSize*h, w*h)
+	if err != nil {
+		return 0, 0, nil, nil, nil, err
+	}
+	return w, h, vals, pix, alpha, nil
 }
