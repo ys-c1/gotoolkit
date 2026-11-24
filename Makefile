@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden lab clean
 
 all: test
 
@@ -12,6 +12,9 @@ build:
 
 golden:
 	$(GO) run ./ref
+
+lab:
+	$(GO) run ./cmd/reorderlab -out artifacts/reorder
 
 clean:
 	rm -rf build

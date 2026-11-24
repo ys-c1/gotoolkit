@@ -12,8 +12,9 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format  string // pgm | bmp | rle，默认 pgm
+	Gain    int    // 亮度增益百分比，0 表示不调整，默认 0
+	Reorder bool   // 仅 rle：重排索引序列使游程数最少（GTR2 流），默认 false
 }
 
 // Image 是解码后的灰度图。
@@ -68,6 +69,9 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
 	default:
+		if opt.Reorder {
+			return codec.EncodeRLE2(src.W, src.H, src.Pix)
+		}
 		return codec.EncodeRLE(src.W, src.H, src.Pix)
 	}
 }
@@ -89,7 +93,12 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	case "bmp":
 		w, h, pix, err = codec.DecodeBMP(data)
 	default:
-		w, h, pix, err = codec.DecodeRLE(data)
+		// rle：按魔数自动识别 GTR1 / GTR2，无需调用方指定 Reorder
+		if len(data) >= 4 && string(data[:4]) == "GTR2" {
+			w, h, pix, err = codec.DecodeRLE2(data)
+		} else {
+			w, h, pix, err = codec.DecodeRLE(data)
+		}
 	}
 	if err != nil {
 		return nil, err
@@ -114,4 +123,20 @@ func applyGain(img *Image, gain int) *Image {
 		out.Pix[i] = uint8(x)
 	}
 	return out
+}
+
+// CountRuns 统计整个索引序列的游程数（整图统计，不抽样）。
+func CountRuns(pix []uint8) int { return codec.CountRuns(pix) }
+
+// ReorderSequence 返回按灰度值稳定重排后的索引序列与位置置换，
+// 重排后游程数达到理论最优 R* = k（不同索引个数）。
+// 时间 Θ(n + 256)，空间 Θ(n)。
+func ReorderSequence(pix []uint8) (seq []uint8, perm []int) {
+	return codec.ReorderByValue(pix)
+}
+
+// BatchWindowRuns 是分窗贪心近似算法重排后的游程数，
+// 误差界 R <= ⌈n/W⌉ * R*；window <= 0 表示不分窗（精确）。
+func BatchWindowRuns(pix []uint8, window int) int {
+	return codec.BatchWindowRuns(pix, window)
 }
