@@ -18,6 +18,8 @@ func main() {
 		os.Exit(runEncode(os.Args[2:]))
 	case "decode":
 		os.Exit(runDecode(os.Args[2:]))
+	case "dither":
+		os.Exit(runDither(os.Args[2:]))
 	default:
 		usage()
 		os.Exit(2)
@@ -25,7 +27,54 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode|dither ...")
+	fmt.Fprintln(os.Stderr, "  dither --in F --out F [--levels N] [--beta F] [--seed N]")
+}
+
+func runDither(args []string) int {
+	fs := flag.NewFlagSet("dither", flag.ContinueOnError)
+	in := fs.String("in", "", "输入 PGM")
+	out := fs.String("out", "", "输出 PGM")
+	levels := fs.Int("levels", 16, "量化级数 2..256")
+	beta := fs.Float64("beta", 0, "误差反馈系数 [-1,1]，0 为原路径")
+	seed := fs.Uint64("seed", 1, "RPDF 抖动种子")
+	dscale := fs.Float64("dither-scale", 1, "抖动幅度比例 (0,1]，1 为满幅")
+	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	if *in == "" || *out == "" {
+		fmt.Fprintln(os.Stderr, "缺少 --in 或 --out")
+		return 2
+	}
+	raw, err := os.ReadFile(*in)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "读取失败:", err)
+		return 1
+	}
+	img, err := api.Decode(raw, api.Options{Format: "pgm"})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "解码失败:", err)
+		return 1
+	}
+	q, err := api.Quantize(img, api.DitherOptions{
+		Levels: *levels, Beta: *beta, Seed: *seed, DitherScale: *dscale,
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "量化失败:", err)
+		return 1
+	}
+	body, err := api.Encode(q, api.Options{Format: "pgm"})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "编码失败:", err)
+		return 1
+	}
+	if err := os.WriteFile(*out, body, 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "写出失败:", err)
+		return 1
+	}
+	fmt.Printf("dithered %dx%d levels=%d beta=%.4f -> %s\n",
+		img.W, img.H, *levels, *beta, *out)
+	return 0
 }
 
 func runEncode(args []string) int {
