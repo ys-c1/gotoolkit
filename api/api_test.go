@@ -66,4 +66,34 @@ func TestRejects(t *testing.T) {
 	if _, err := Decode(nil, Options{Format: "pgm"}); err == nil {
 		t.Fatal("空数据应报错")
 	}
+	if _, err := Encode(img, Options{Format: "subband", SubLevels: 9}); err == nil {
+		t.Fatal("子带层数越界应报错")
+	}
+}
+
+func TestSubbandRoundTripAndModes(t *testing.T) {
+	// 画幅需能被 2^levels 整除，用 8x8。
+	img := &Image{W: 8, H: 8, Pix: make([]uint8, 64)}
+	for i := range img.Pix {
+		img.Pix[i] = uint8(i*3 + 7)
+	}
+	budget := 8 * 8 * 2
+	for _, water := range []bool{true, false} {
+		opt := Options{Format: "subband", SubLevels: 2, SubBudget: budget, SubWaterfill: water}
+		body, err := Encode(img, opt)
+		if err != nil {
+			t.Fatalf("waterfill=%v 编码失败: %v", water, err)
+		}
+		if _, err := Decode(body, Options{Format: "subband"}); err != nil {
+			t.Fatalf("waterfill=%v 解码失败: %v", water, err)
+		}
+	}
+	// 默认选项（零值层数/预算）应自动补默认值。
+	body, err := Encode(img, Options{Format: "subband"})
+	if err != nil {
+		t.Fatalf("默认子带选项编码失败: %v", err)
+	}
+	if _, err := Decode(body, Options{Format: "subband"}); err != nil {
+		t.Fatalf("默认子带选项解码失败: %v", err)
+	}
 }
