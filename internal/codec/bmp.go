@@ -62,3 +62,31 @@ func DecodeBMP(data []byte) (int, int, []uint8, error) {
 	}
 	return w, h, pix, nil
 }
+
+// EncodeBMPMasked 在 24 位 BMP 之后追加掩码尾段。
+// BMP 像素保持三通道同值不变，透明信息只存在尾段里，解码可零误差还原原值。
+func EncodeBMPMasked(w, h int, pix, alpha []uint8, maskValue uint8) ([]byte, error) {
+	if w <= 0 || h <= 0 || len(pix) != w*h || len(alpha) != w*h {
+		return nil, errors.New("画幅或像素数不匹配")
+	}
+	body, err := EncodeBMP(w, h, pix)
+	if err != nil {
+		return nil, err
+	}
+	return append(body, buildMaskTrailer(maskValue, alpha)...), nil
+}
+
+// DecodeBMPMasked 解析带掩码尾段的 BMP，返回记录的掩码值、像素与 alpha（透明为 0）。
+func DecodeBMPMasked(data []byte) (int, int, uint8, []uint8, []uint8, error) {
+	w, h, pix, err := DecodeBMP(data)
+	if err != nil {
+		return 0, 0, 0, nil, nil, err
+	}
+	rowSize := (w*3 + 3) &^ 3
+	off := int(binary.LittleEndian.Uint32(data[10:])) // 与 DecodeBMP 同一像素区偏移
+	maskValue, alpha, err := parseMaskTrailer(data, off+rowSize*h, w*h)
+	if err != nil {
+		return 0, 0, 0, nil, nil, err
+	}
+	return w, h, maskValue, pix, alpha, nil
+}
