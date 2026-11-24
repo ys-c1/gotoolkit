@@ -14,3 +14,16 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 低位深三处联动
+
+`--bits` 是唯一共享参数，驱动量化步长、抖动误差基准与调色板/索引位宽。
+
+```
+./build/gtk encode --format bmp --in a.pgm --out a.bmp --bits 4 --force on
+./build/gtk dump   --in a.pgm --bits 2 --target-err 43
+make matrix                          # 18 组合 × 两档 -> artifacts/lowbit/
+```
+
+错误码：`E_LOWBIT_BITS`（位深越界）、`E_LOWBIT_KERNEL_SUM`（核权重和为零），CLI 退出码 3。
+详见 `artifacts/lowbit/REPORT.md`。
