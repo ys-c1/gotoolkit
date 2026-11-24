@@ -14,3 +14,21 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 量化偏置研究（误差均匀性 → 散度最优重建偏移）
+
+额外的实验子系统，验证“量化误差服从均匀分布”这一假设、推导误差分布的偏置项，
+并求解使分布到均匀分布的 W₂ 散度最小的重建电平偏移：
+
+```
+make study     # = go run ./cmd/quantstudy + python3 analysis/plot_quant_bias.py
+```
+
+- 四类确定性测试图（gradient/photo/texture/noise）× 三档位深（2/3/4 bit）
+- 原始零偏移量化器保留为对照；逐档给出 JS/KL/χ²/W₂ 散度与直方图
+- 验收线：整数偏移后的归一化残余偏置 `|E[e]|/Δ ≤ 0.05`，四类 × 三档全部通过
+- 推导、数值表、0.05 阈值来源与图表见
+  [`artifacts/quant_bias/REPORT.md`](artifacts/quant_bias/REPORT.md)
+- 硬断言在 `internal/quantbias/quantbias_test.go` 与 `api/quantbias_test.go`，
+  随 `make test` 一起运行
+

@@ -1,0 +1,6 @@
+# analysis/plot_quant_bias.py 的绘图依赖（Go 核心与测试不需要 Python）。
+# 版本为实际生成图表时的环境版本，更低的兼容版本通常也可运行。
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+pillow>=9.0

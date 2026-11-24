@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden study clean
 
 all: test
 
@@ -12,6 +12,10 @@ build:
 
 golden:
 	$(GO) run ./ref
+
+study:
+	$(GO) run ./cmd/quantstudy
+	python3 analysis/plot_quant_bias.py
 
 clean:
 	rm -rf build
