@@ -14,6 +14,14 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+
+	// KeyframeInterval 是多帧差分序列的关键帧间隔 K：第 0,K,2K,... 帧为关键帧。
+	// K=1 表示全关键帧，逐帧走既有无损格式且产物与旧实现逐字节一致；0 按默认值 1 处理。
+	KeyframeInterval int
+
+	// QuantStep 是 P 帧相邻原始帧差分的最近邻量化步长 q，默认 1（恒等/无损）。
+	// 每像素每阶的最大量化误差为 floor(q/2)。仅对 EncodeSequence 产生的 GTD1 负载生效。
+	QuantStep int
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +38,9 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options {
+	return Options{Format: "pgm", Gain: 0, KeyframeInterval: 1, QuantStep: 1}
+}
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -41,7 +51,24 @@ func (o Options) validate() error {
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.KeyframeInterval < 0 {
+		return fmt.Errorf("%w: KeyframeInterval=%d 不能为负", ErrBadOption, o.KeyframeInterval)
+	}
+	if o.QuantStep < 0 || o.QuantStep > 65535 {
+		return fmt.Errorf("%w: QuantStep=%d 超出 [0,65535]", ErrBadOption, o.QuantStep)
+	}
 	return nil
+}
+
+// chainOptions 把零值规格化为多帧链路默认值。
+func (o Options) chainOptions() Options {
+	if o.KeyframeInterval == 0 {
+		o.KeyframeInterval = 1
+	}
+	if o.QuantStep == 0 {
+		o.QuantStep = 1
+	}
+	return o
 }
 
 // Encode 把灰度图编码成指定格式。

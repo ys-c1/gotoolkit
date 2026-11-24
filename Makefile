@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden clean chain
 
 all: test
 
@@ -9,6 +9,9 @@ test:
 
 build:
 	$(GO) build -o build/gtk ./cmd/gtk
+
+chain:
+	$(GO) run ./cmd/chainbench
 
 golden:
 	$(GO) run ./ref
