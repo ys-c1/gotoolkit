@@ -14,6 +14,10 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	// Divisor 是缩略图降采样除数（面积平均，d×d 源块合成一个输出像素）。
+	// 默认 1 表示不降采样、输出与基准逐字节相同；必须 >= 1，0 或负值报错。
+	// 语义细节见 downsampleAreaAvg。
+	Divisor int
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +34,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, Divisor: 1} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +44,9 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.Divisor <= 0 {
+		return fmt.Errorf("%w: Divisor=%d 必须 >= 1", ErrBadOption, o.Divisor)
 	}
 	return nil
 }
@@ -61,6 +68,9 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Divisor > 1 {
+		src = downsampleAreaAvg(src, opt.Divisor)
 	}
 	switch opt.Format {
 	case "pgm":
@@ -97,6 +107,9 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	img := &Image{W: w, H: h, Pix: pix}
 	if opt.Gain != 0 {
 		img = applyGain(img, -opt.Gain)
+	}
+	if opt.Divisor > 1 {
+		img = downsampleAreaAvg(img, opt.Divisor)
 	}
 	return img, nil
 }

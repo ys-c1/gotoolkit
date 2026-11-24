@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--divisor D]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,7 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	divisor := fs.Int("divisor", 1, "面积平均降采样除数，1 表示不降采样，必须 >= 1")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -46,12 +47,12 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "读取失败:", err)
 		return 1
 	}
-	img, err := api.Decode(raw, api.Options{Format: "pgm"})
+	img, err := api.Decode(raw, api.Options{Format: "pgm", Divisor: 1})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain, Divisor: *divisor})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -70,6 +71,7 @@ func runDecode(args []string) int {
 	in := fs.String("in", "", "输入文件")
 	out := fs.String("out", "", "输出 PGM")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	divisor := fs.Int("divisor", 1, "面积平均降采样除数，1 表示不降采样，必须 >= 1")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -82,12 +84,12 @@ func runDecode(args []string) int {
 		fmt.Fprintln(os.Stderr, "读取失败:", err)
 		return 1
 	}
-	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain})
+	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain, Divisor: *divisor})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: "pgm"})
+	body, err := api.Encode(img, api.Options{Format: "pgm", Divisor: 1})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
