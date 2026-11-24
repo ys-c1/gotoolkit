@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"gotoolkit/api"
+	"gotoolkit/internal/dither"
 )
 
 func main() {
@@ -18,6 +19,8 @@ func main() {
 		os.Exit(runEncode(os.Args[2:]))
 	case "decode":
 		os.Exit(runDecode(os.Args[2:]))
+	case "dither-report":
+		os.Exit(runDitherReport(os.Args[2:]))
 	default:
 		usage()
 		os.Exit(2)
@@ -25,7 +28,8 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--dither bayer|void-cluster|spectral]")
+	fmt.Fprintln(os.Stderr, "       gtk dither-report            # 三种矩阵的低频能量与量化误差并列")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +38,7 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	ditherName := fs.String("dither", "", "抖动矩阵: bayer|void-cluster|spectral（默认不抖动）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,7 +56,7 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain, Dither: *ditherName})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -97,5 +102,15 @@ func runDecode(args []string) int {
 		return 1
 	}
 	fmt.Printf("decoded %s -> %dx%d pgm (%d bytes)\n", *format, img.W, img.H, len(body))
+	return 0
+}
+
+// runDitherReport 输出三种矩阵的低频能量与量化误差并列对比。
+func runDitherReport(args []string) int {
+	fs := flag.NewFlagSet("dither-report", flag.ContinueOnError)
+	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	fmt.Print(dither.FormatReport(dither.BuildReport()))
 	return 0
 }
