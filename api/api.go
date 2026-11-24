@@ -14,6 +14,11 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+
+	// ChromaRecon 控制色度 4:2:0 重建模式，仅作用于彩色（PPM/色度往返）路径：
+	//   空串（默认）= 不启用，灰度编解码行为与逐字节输出完全不变；
+	//   ChromaReconBilinear / ChromaReconAdaptive = 启用色度路径并选择重建模式。
+	ChromaRecon string
 }
 
 // Image 是解码后的灰度图。
@@ -42,6 +47,16 @@ func (o Options) validate() error {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
 	return nil
+}
+
+// validateChroma 校验色度路径专用参数；ChromaRecon 为空表示未启用，由调用方先判断。
+func (o Options) validateChroma() error {
+	switch o.ChromaRecon {
+	case ChromaReconBilinear, ChromaReconAdaptive:
+		return nil
+	default:
+		return fmt.Errorf("%w: ChromaRecon=%q 非合法重建模式", ErrBadOption, o.ChromaRecon)
+	}
 }
 
 // Encode 把灰度图编码成指定格式。
