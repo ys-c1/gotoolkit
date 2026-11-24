@@ -14,6 +14,11 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	// MemBudget 是解码工作集预算（字节，含输入缓冲与固定余量）。
+	// 0 表示不限预算，走历史默认路径；可填 BudgetTight / BudgetGenerous。
+	MemBudget int64
+	// BandRows 是分块解码的每块行数；0 表示按预算自动选最大可容纳块。
+	BandRows int
 }
 
 // Image 是解码后的灰度图。
@@ -40,6 +45,12 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.MemBudget < 0 {
+		return fmt.Errorf("%w: MemBudget 不能为负", ErrBadOption)
+	}
+	if o.BandRows < 0 {
+		return fmt.Errorf("%w: BandRows 不能为负", ErrBadOption)
 	}
 	return nil
 }
@@ -79,6 +90,17 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	}
 	if err := opt.validate(); err != nil {
 		return nil, err
+	}
+	// 预算闸门：原路径需要同时持有输入与整图输出，先核算再决定，
+	// 超预算直接拒绝并说明超限项，绝不在 make 大图时崩溃。
+	if opt.MemBudget > 0 {
+		plan, perr := codec.PlanDecode(opt.Format, data, opt.MemBudget, opt.BandRows)
+		if perr != nil {
+			return nil, perr
+		}
+		if verr := plan.CheckWhole(opt.MemBudget); verr != nil {
+			return nil, fmt.Errorf("%w: %v", ErrBudget, verr)
+		}
 	}
 	var w, h int
 	var pix []uint8
