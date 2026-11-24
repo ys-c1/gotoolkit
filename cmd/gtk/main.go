@@ -1,11 +1,13 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
 
 	"gotoolkit/api"
+	"gotoolkit/internal/batch"
 )
 
 func main() {
@@ -18,6 +20,10 @@ func main() {
 		os.Exit(runEncode(os.Args[2:]))
 	case "decode":
 		os.Exit(runDecode(os.Args[2:]))
+	case "batch-encode":
+		os.Exit(runBatch(batch.Encode, os.Args[2:]))
+	case "batch-decode":
+		os.Exit(runBatch(batch.Decode, os.Args[2:]))
 	default:
 		usage()
 		os.Exit(2)
@@ -26,6 +32,51 @@ func main() {
 
 func usage() {
 	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "       gtk batch-encode|batch-decode --format pgm|bmp|rle --in DIR --out DIR [--gain N]")
+}
+
+// 批量子命令退出码约定：
+//
+//	0 全部文件成功
+//	1 有文件失败（失败隔离，其余已处理）
+//	2 用法/参数错误
+//	3 输入目录为空（无候选文件）
+//	4 权限不足（无法遍历目录或读写文件）
+func runBatch(mode batch.Mode, args []string) int {
+	fs := flag.NewFlagSet("batch", flag.ContinueOnError)
+	format := fs.String("format", "pgm", "目标/输入格式")
+	in := fs.String("in", "", "输入目录")
+	out := fs.String("out", "", "输出目录")
+	gain := fs.Int("gain", 0, "亮度增益百分比")
+	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	if *in == "" || *out == "" {
+		fmt.Fprintln(os.Stderr, "缺少 --in 或 --out")
+		return 2
+	}
+	rep, err := batch.Run(mode, *format, *gain, *in, *out)
+	if err != nil {
+		switch {
+		case errors.Is(err, batch.ErrPermission):
+			fmt.Fprintln(os.Stderr, err)
+			return 4
+		case errors.Is(err, batch.ErrDirEmpty):
+			fmt.Fprintln(os.Stderr, err)
+			return 3
+		default:
+			fmt.Fprintln(os.Stderr, "批量处理失败:", err)
+			return 2
+		}
+	}
+	if err := batch.RenderReport(os.Stdout, rep); err != nil {
+		fmt.Fprintln(os.Stderr, "输出汇总失败:", err)
+		return 1
+	}
+	if rep.Failed > 0 {
+		return 1
+	}
+	return 0
 }
 
 func runEncode(args []string) int {

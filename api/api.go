@@ -44,6 +44,9 @@ func (o Options) validate() error {
 	return nil
 }
 
+// Validate 暴露给批量编排等外部入口做参数前置校验，语义与内部校验一致。
+func (o Options) Validate() error { return o.validate() }
+
 // Encode 把灰度图编码成指定格式。
 func Encode(img *Image, opt Options) ([]byte, error) {
 	if img == nil {

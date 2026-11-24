@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden clean batch-e2e
 
 all: test
 
@@ -12,6 +12,10 @@ build:
 
 golden:
 	$(GO) run ./ref
+
+# 批量链路端到端：十二组各跑一次，机读记录落在 artifacts/batch-records/。
+batch-e2e:
+	bash script/batch-e2e.sh
 
 clean:
 	rm -rf build
