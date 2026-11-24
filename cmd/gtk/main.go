@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--ext-header] [--flip-rows]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,8 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	extHeader := fs.Bool("ext-header", false, "PGM 扩展头开关（位深/行序标志/校验和）")
+	flipRows := fs.Bool("flip-rows", false, "PGM 行序开关（底朝上）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,7 +53,7 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain, ExtHeader: *extHeader, FlipRows: *flipRows})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -70,6 +72,8 @@ func runDecode(args []string) int {
 	in := fs.String("in", "", "输入文件")
 	out := fs.String("out", "", "输出 PGM")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	extHeader := fs.Bool("ext-header", false, "PGM 扩展头开关（仅 pgm 输出有效）")
+	flipRows := fs.Bool("flip-rows", false, "PGM 行序开关（仅 pgm 输出有效）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -87,7 +91,7 @@ func runDecode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: "pgm"})
+	body, err := api.Encode(img, api.Options{Format: "pgm", ExtHeader: *extHeader, FlipRows: *flipRows})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
