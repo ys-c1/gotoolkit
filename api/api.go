@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"gotoolkit/internal/codec"
+	"gotoolkit/internal/quality"
 )
 
 // Options 是所有编解码参数的公共入口。
@@ -14,6 +15,11 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+
+	// Threshold 是画质阈值：允许的最大逐像素绝对灰度误差，取值 0..255。
+	// 0（默认）表示不启用量化，三种格式的输出与历史行为逐字节一致；
+	// >0 时编码前按量化误差闭式反解最粗合格位深（见 internal/quality）。
+	Threshold int
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +36,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, Threshold: 0} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +46,9 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.Threshold < 0 || o.Threshold > quality.MaxThreshold {
+		return fmt.Errorf("%w: Threshold=%d 超出 [0,%d]", ErrBadOption, o.Threshold, quality.MaxThreshold)
 	}
 	return nil
 }
@@ -61,6 +70,12 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Threshold > 0 {
+		// 按画质阈值闭式反解量化档；s=0（阈值为 0）时不动像素，保持现状。
+		if s := quality.ShiftForThreshold(opt.Threshold); s > 0 {
+			src = &Image{W: src.W, H: src.H, Pix: quality.Quantize(src.Pix, s)}
+		}
 	}
 	switch opt.Format {
 	case "pgm":
