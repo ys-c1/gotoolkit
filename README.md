@@ -13,4 +13,11 @@ make test
 make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
+
+# 可选：中位切分调色板；不写 --palette 时产物与历史字节一致
+./build/gtk encode --format rle --palette --buckets 16 --in a.pgm --out a.rle
+go run ./cmd/palettecurve   # 生成桶数—误差曲线表与三档 PGM
 ```
+
+调色板的桶数预测、三档实测误差和分裂顺序对照见
+[`artifacts/palette-curve/report.md`](artifacts/palette-curve/report.md)。
