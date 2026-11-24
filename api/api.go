@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"gotoolkit/internal/codec"
+	"gotoolkit/internal/quant"
 )
 
 // Options 是所有编解码参数的公共入口。
@@ -14,6 +15,7 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Bits   int    // 量化位深 1..8（2^Bits 个单调重建电平），0 表示不量化，默认 0
 }
 
 // Image 是解码后的灰度图。
@@ -41,6 +43,9 @@ func (o Options) validate() error {
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.Bits != 0 && (o.Bits < 1 || o.Bits > 8) {
+		return fmt.Errorf("%w: Bits=%d 超出 0(不量化) 或 [1,8]", ErrBadOption, o.Bits)
+	}
 	return nil
 }
 
@@ -61,6 +66,13 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Bits != 0 {
+		tab, err := quant.New(opt.Bits)
+		if err != nil {
+			return nil, fmt.Errorf("%w: %v", ErrBadOption, err)
+		}
+		src = quantizeImage(src, tab)
 	}
 	switch opt.Format {
 	case "pgm":

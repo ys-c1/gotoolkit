@@ -14,3 +14,7 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+低比特量化（`--bits 1..8`，默认不量化）的单调性约束、修前非单调样例与
+逐点实测见 [`docs/monotonic-quant.md`](docs/monotonic-quant.md)；
+`go run ./cmd/monoreport` 可复现三档位深（2/3/4 bit）的破坏点数与最大反转量。
