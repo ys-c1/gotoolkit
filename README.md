@@ -14,3 +14,17 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 块边界去块滤波（最优强度）
+
+块 DC 量化压缩会在格子边产生台阶。按边界量化误差分布推出闭式最优强度
+`α* = Vn/(Vn+Vs)`，并在三档块长 4/8/16 上与固定 `α=0.5` 对照：
+
+```
+make study
+```
+
+完整推导、代入数值、并列指标表与“滤波关闭产物不变”的验证见
+[`docs/deblock-optimal-strength.md`](docs/deblock-optimal-strength.md)，
+产物在 `artifacts/deblock/`。解码时可用
+`--block B --deblock-alpha A` 开启滤波；零值（默认）关闭，产物逐字节不变。

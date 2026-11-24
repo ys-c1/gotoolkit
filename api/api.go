@@ -14,6 +14,12 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+
+	// BlockSize 与 DeblockStrength 仅用于解码后的可选去块滤波。
+	// BlockSize 是块压缩的块长（像素）；DeblockStrength 是边界混合强度 α∈[0,1]。
+	// 两者零值即“滤波关闭”：解码像素与字节产物和旧版本逐字节一致（默认 0/0）。
+	BlockSize       int
+	DeblockStrength float64
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +36,9 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options {
+	return Options{Format: "pgm", Gain: 0, BlockSize: 0, DeblockStrength: 0}
+}
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +48,12 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.DeblockStrength < 0 || o.DeblockStrength > 1 {
+		return fmt.Errorf("%w: DeblockStrength=%v 超出 [0,1]", ErrBadOption, o.DeblockStrength)
+	}
+	if o.BlockSize < 0 {
+		return fmt.Errorf("%w: BlockSize=%d 不能为负", ErrBadOption, o.BlockSize)
 	}
 	return nil
 }
@@ -97,6 +111,10 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	img := &Image{W: w, H: h, Pix: pix}
 	if opt.Gain != 0 {
 		img = applyGain(img, -opt.Gain)
+	}
+	// 可选去块滤波：仅当显式给出块长且强度>0 时才改变像素。
+	if opt.BlockSize > 0 && opt.DeblockStrength > 0 {
+		img = DeblockImage(img, opt.BlockSize, opt.DeblockStrength)
 	}
 	return img, nil
 }
