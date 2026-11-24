@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 func sample() *Image {
@@ -47,8 +48,57 @@ func TestGoldenBytes(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !bytes.Equal(got, want) {
-			t.Fatalf("%s 与原编码不逐字节一致", f)
+			t.Fatalf("%s 与基准不逐字节一致", f)
 		}
+	}
+}
+
+// TestPGMDecodeZeroCopy 固定 PGM 的零拷贝契约：对齐后像素起点直接切片返回。
+func TestPGMDecodeZeroCopy(t *testing.T) {
+	img := sample()
+	body, err := Encode(img, Options{Format: "pgm"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := Decode(body, Options{Format: "pgm"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// 在 body 里定位像素起点：最后一个 "255\n" 之后。
+	idx := bytes.LastIndex(body, []byte("255\n")) + 4
+	if &got.Pix[0] != &body[idx] {
+		t.Fatalf("PGM 解码应零拷贝：Pix 起点 %p，body 光栅 %p", &got.Pix[0], &body[idx])
+	}
+	// 入参改动应同步可见（证明确实共享，而不是碰巧相等）。
+	body[idx] = 0x5A
+	if got.Pix[0] != 0x5A {
+		t.Fatal("PGM Pix 与入参不共享底层数组")
+	}
+}
+
+func TestDecodeLatencyPerFormat(t *testing.T) {
+	// 每种格式跑 N 次取平均，作为「各一次」的读数来源。
+	const w, h = 512, 512
+	img := &Image{W: w, H: h, Pix: make([]uint8, w*h)}
+	for i := range img.Pix {
+		img.Pix[i] = uint8((i*37 + 11) & 0xff)
+	}
+	const iters = 200
+	for _, f := range []string{"pgm", "bmp", "rle"} {
+		body, err := Encode(img, Options{Format: f})
+		if err != nil {
+			t.Fatal(err)
+		}
+		start := time.Now()
+		for i := 0; i < iters; i++ {
+			if _, err := Decode(body, Options{Format: f}); err != nil {
+				t.Fatal(err)
+			}
+		}
+		elapsed := time.Since(start)
+		t.Logf("%s decode: %d iters, avg %.3f ms, %.1f MB/s", f, iters,
+			float64(elapsed.Microseconds())/1000/float64(iters),
+			float64(len(img.Pix)*iters)/(elapsed.Seconds()*1e6))
 	}
 }
 
