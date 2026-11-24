@@ -13,4 +13,10 @@ make test
 make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
+./build/gtk scale --in a.pgm --out half.pgm --ratio 0.5 --space encoded
+./build/gtk gamma-lab --gamma 2.2 --tolerance 1
 ```
+
+伽马/缩放导致的暗边偏差、反解补偿公式与两档画幅复算见
+[`docs/gamma-scale.md`](docs/gamma-scale.md)。`--space encoded`
+始终保留直接在编码值上缩放的原路径。

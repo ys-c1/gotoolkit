@@ -14,6 +14,12 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+
+	// 以下参数只被 Scale / GammaLab 使用。
+	Ratio      float64 // 缩小比，必须是 1/N；例如 0.5、0.25、0.125
+	Gamma      float64 // 伽马；0 表示默认 2.2
+	ScaleSpace string  // encoded（原路径，默认）| gamma-dual | compensated | linear
+	Tolerance  float64 // GammaLab 的 8-bit 码值容差；0 表示默认 1
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +36,15 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options {
+	return Options{
+		Format:     "pgm",
+		Gain:       0,
+		Gamma:      2.2,
+		ScaleSpace: "encoded",
+		Tolerance:  1,
+	}
+}
 
 func (o Options) validate() error {
 	switch o.Format {
