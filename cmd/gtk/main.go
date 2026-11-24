@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--gamma G | --target-mean M]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,8 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	gamma := fs.Float64("gamma", 1, "伽马校正指数（正数，1 为恒等）")
+	targetMean := fs.Float64("target-mean", -1, "目标平均亮度：由其反解伽马，与 --gamma 互斥")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -41,17 +43,37 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "缺少 --in 或 --out")
 		return 2
 	}
+	gammaSet := false
+	fs.Visit(func(f *flag.Flag) {
+		if f.Name == "gamma" {
+			gammaSet = true
+		}
+	})
+	if gammaSet && *targetMean >= 0 {
+		fmt.Fprintln(os.Stderr, "--gamma 与 --target-mean 互斥")
+		return 2
+	}
 	raw, err := os.ReadFile(*in)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "读取失败:", err)
 		return 1
 	}
-	img, err := api.Decode(raw, api.Options{Format: "pgm"})
+	img, err := api.Decode(raw, api.Options{Format: "pgm", Gamma: 1})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	opt := api.Options{Format: *format, Gain: *gain, Gamma: *gamma}
+	if *targetMean >= 0 {
+		g, bound, err := api.SolveGamma(img.Pix, *targetMean)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "伽马反解失败:", err)
+			return 1
+		}
+		opt.Gamma = g
+		fmt.Printf("solved gamma=%.10f for targetMean=%.2f (回代上界 %.4f)\n", g, *targetMean, bound)
+	}
+	body, err := api.Encode(img, opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -60,7 +82,7 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "写出失败:", err)
 		return 1
 	}
-	fmt.Printf("encoded %dx%d -> %s (%d bytes)\n", img.W, img.H, *format, len(body))
+	fmt.Printf("encoded %dx%d -> %s (%d bytes, gamma=%.10f)\n", img.W, img.H, *format, len(body), opt.Gamma)
 	return 0
 }
 
@@ -70,6 +92,7 @@ func runDecode(args []string) int {
 	in := fs.String("in", "", "输入文件")
 	out := fs.String("out", "", "输出 PGM")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	gamma := fs.Float64("gamma", 1, "编码时使用的伽马指数，解码按 1/gamma 还原")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -82,12 +105,12 @@ func runDecode(args []string) int {
 		fmt.Fprintln(os.Stderr, "读取失败:", err)
 		return 1
 	}
-	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain})
+	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain, Gamma: *gamma})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: "pgm"})
+	body, err := api.Encode(img, api.Options{Format: "pgm", Gamma: 1})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -96,6 +119,6 @@ func runDecode(args []string) int {
 		fmt.Fprintln(os.Stderr, "写出失败:", err)
 		return 1
 	}
-	fmt.Printf("decoded %s -> %dx%d pgm (%d bytes)\n", *format, img.W, img.H, len(body))
+	fmt.Printf("decoded %s -> %dx%d pgm (%d bytes, gamma=%.10f)\n", *format, img.W, img.H, len(body), *gamma)
 	return 0
 }

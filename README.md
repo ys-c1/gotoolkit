@@ -13,4 +13,7 @@ make test
 make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
+# 伽马：--gamma 直接指定（默认 1 恒等），或 --target-mean 由目标平均亮度反解
+./build/gtk encode --format pgm --in a.pgm --out g.pgm --target-mean 180
+./build/gtk decode --format pgm --in g.pgm --out back.pgm --gamma 2.4104554146
 ```
