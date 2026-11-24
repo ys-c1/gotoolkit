@@ -14,7 +14,11 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Flip   string // 行翻转模式："" | "none" 不翻转（默认），"v" 垂直翻转
 }
+
+// FlipModes 是 Flip 的全部合法取值，用于校验与报错提示。
+var FlipModes = []string{"", "none", "v"}
 
 // Image 是解码后的灰度图。
 type Image struct {
@@ -30,7 +34,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, Flip: ""} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +44,11 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	switch o.Flip {
+	case "", "none", "v":
+	default:
+		return fmt.Errorf("%w: Flip=%q 非法，可取: \"\", \"none\", \"v\"", ErrBadOption, o.Flip)
 	}
 	return nil
 }
@@ -61,6 +70,10 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Flip == "v" {
+		// 先翻像素行，再交给编码器写头：头部字段与未翻转时完全一致。
+		src = flipVertical(src)
 	}
 	switch opt.Format {
 	case "pgm":
@@ -98,7 +111,20 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	if opt.Gain != 0 {
 		img = applyGain(img, -opt.Gain)
 	}
+	if opt.Flip == "v" {
+		img = flipVertical(img)
+	}
 	return img, nil
+}
+
+// flipVertical 返回上下翻转后的新图，不改动入参。
+// 翻转两次必然回到原图（对任意 W、H 成立，含奇数行高）。
+func flipVertical(img *Image) *Image {
+	out := &Image{W: img.W, H: img.H, Pix: make([]uint8, len(img.Pix))}
+	for y := 0; y < img.H; y++ {
+		copy(out.Pix[y*img.W:(y+1)*img.W], img.Pix[(img.H-1-y)*img.W:(img.H-y)*img.W])
+	}
+	return out
 }
 
 func applyGain(img *Image, gain int) *Image {

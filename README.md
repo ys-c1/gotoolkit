@@ -13,4 +13,8 @@ make test
 make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
+./build/gtk encode --format bmp --flip v --in a.pgm --out a-flip.bmp   # 垂直翻转
 ```
+
+行翻转参数 `Flip`（`""`/`"none"`/`"v"`）在 `api.Options` 与 CLI `--flip` 均可设置；
+两种行序的字节对照与验证记录见 `docs/flip.md`。
