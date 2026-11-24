@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--palette --buckets K [--variance-threshold T]]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,9 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	paletteOn := fs.Bool("palette", false, "启用中位切分调色板量化")
+	buckets := fs.Int("buckets", 0, "调色板桶数上限 K（--palette 时必填，1..256）")
+	variance := fs.Float64("variance-threshold", 0, "桶内方差停止阈值 τ；0 表示按 K 自动推导")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,10 +54,27 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	opt := api.Options{
+		Format:            *format,
+		Gain:              *gain,
+		Palette:           *paletteOn,
+		Buckets:           *buckets,
+		VarianceThreshold: *variance,
+	}
+	body, err := api.Encode(img, opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
+	}
+	if *paletteOn {
+		// 编码成功后再打印实际使用的阈值，便于命令行侧复算。
+		tau := *variance
+		if tau == 0 {
+			tau, _ = api.PaletteThreshold(*buckets)
+			fmt.Printf("palette K=%d tau=%.6f (derived = (256/K)^2/12)\n", *buckets, tau)
+		} else {
+			fmt.Printf("palette K=%d tau=%.6f (manual)\n", *buckets, tau)
+		}
 	}
 	if err := os.WriteFile(*out, body, 0o644); err != nil {
 		fmt.Fprintln(os.Stderr, "写出失败:", err)
