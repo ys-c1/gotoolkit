@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--sharpen [--k N] [--sharpen-gain G]]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,9 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	doSharpen := fs.Bool("sharpen", false, "开启锐化（反解过冲为零的最大增益与核宽）")
+	kFlag := fs.Int("k", 0, "锐化核宽（0=自动反解）")
+	sgFlag := fs.Float64("sharpen-gain", 0, "覆盖反解增益（0=采用反解值）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,7 +54,27 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	opt := api.Options{Format: *format, Gain: *gain}
+	if *doSharpen {
+		opt.Sharpen, opt.SharpenK, opt.SharpenGain = true, *kFlag, *sgFlag
+		sr, err := api.SolveSharpen(img, *kFlag)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "反解失败:", err)
+			return 1
+		}
+		gain := sr.Gain
+		if *sgFlag > 0 {
+			gain = *sgFlag
+		}
+		over, overPix, boost := api.MeasureSharpen(img, sr, gain)
+		flag := ""
+		if overPix > 0 {
+			flag = " [超限]"
+		}
+		fmt.Printf("sharpen k=%d D=%.6f gain=%.6f boost=%.3f over=%.6g overPix=%d%s\n",
+			sr.K, sr.D, gain, boost, over, overPix, flag)
+	}
+	body, err := api.Encode(img, opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1

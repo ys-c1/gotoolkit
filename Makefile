@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden goldenreport clean
 
 all: test
 
@@ -12,6 +12,10 @@ build:
 
 golden:
 	$(GO) run ./ref
+
+# 生成锐化反解与实测过冲的报告（docs/sharpen-overshoot.md）。
+goldenreport:
+	$(GO) run ./cmd/sharpreport
 
 clean:
 	rm -rf build

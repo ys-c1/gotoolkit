@@ -14,3 +14,21 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 锐化
+
+锐化是可选的，`--sharpen` 缺省时产物与原编码逐字节一致。
+
+```sh
+./build/gtk encode --format pgm --in a.pgm --out b.pgm --sharpen
+./build/gtk encode --format pgm --in a.pgm --out b.pgm --sharpen --k 7
+./build/gtk encode --format pgm --in a.pgm --out b.pgm --sharpen --sharpen-gain 8
+```
+
+模型为 `I' = I + g*(I - G_k*I)`，`G_k` 是 σ=(k-1)/3 的归一化高斯。
+「过冲为零」指输出不越过 `[0,255]`（不截平出白边/黑边）。反解见
+`internal/sharpen`，结论与三档对比度实测表见 `docs/sharpen-overshoot.md`
+（`make goldenreport` 重新生成）：
+
+- 逐像素闭式解：`g* = min_x {(255-v)/h (h>0); v/(-h) (h<0)}`，`h=I-G_k*I`
+- 阶跃边缘：`g_max(C,k) = H/(C*D_k)`，`D_k=(1-w_c)/2`，`H=min(255-hi,lo)`
