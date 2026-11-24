@@ -12,8 +12,9 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format    string // pgm | bmp | rle，默认 pgm
+	Gain      int    // 亮度增益百分比，0 表示不调整，默认 0
+	ChunkSize int    // rle 分块块长（像素），0 表示不分块，默认 0
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +31,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, ChunkSize: 0} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +41,9 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.ChunkSize < 0 || o.ChunkSize > 0xffff {
+		return fmt.Errorf("%w: ChunkSize=%d 超出 [0,65535]", ErrBadOption, o.ChunkSize)
 	}
 	return nil
 }
@@ -68,7 +72,7 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
 	default:
-		return codec.EncodeRLE(src.W, src.H, src.Pix)
+		return codec.EncodeRLEChunked(src.W, src.H, src.Pix, opt.ChunkSize)
 	}
 }
 
