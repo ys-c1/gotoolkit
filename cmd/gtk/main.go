@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N] [--checksum] [--polynomial crc32-ieee|crc16-ibm]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,8 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	cksum := fs.Bool("checksum", false, "在文件头写入校验和")
+	poly := fs.String("polynomial", "", "校验多项式: crc32-ieee | crc16-ibm（默认 crc32-ieee）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,7 +53,7 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain, Checksum: *cksum, Polynomial: *poly})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
@@ -70,6 +72,8 @@ func runDecode(args []string) int {
 	in := fs.String("in", "", "输入文件")
 	out := fs.String("out", "", "输出 PGM")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	cksum := fs.Bool("checksum", false, "按文件头校验和验证")
+	poly := fs.String("polynomial", "", "校验多项式: crc32-ieee | crc16-ibm（默认 crc32-ieee）")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -82,7 +86,7 @@ func runDecode(args []string) int {
 		fmt.Fprintln(os.Stderr, "读取失败:", err)
 		return 1
 	}
-	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain})
+	img, err := api.Decode(raw, api.Options{Format: *format, Gain: *gain, Checksum: *cksum, Polynomial: *poly})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1

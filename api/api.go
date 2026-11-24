@@ -6,14 +6,17 @@ import (
 	"errors"
 	"fmt"
 
+	"gotoolkit/internal/checksum"
 	"gotoolkit/internal/codec"
 )
 
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format     string // pgm | bmp | rle，默认 pgm
+	Gain       int    // 亮度增益百分比，0 表示不调整，默认 0
+	Checksum   bool   // 是否在文件头写入并按文件体验证多项式校验，默认 false
+	Polynomial string // 校验多项式名字：crc32-ieee（32 位档，默认）| crc16-ibm（16 位档）
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +33,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, Checksum: false, Polynomial: ""} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +43,11 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.Polynomial != "" {
+		if _, err := checksum.ByName(o.Polynomial); err != nil {
+			return fmt.Errorf("%w: %v", ErrBadOption, err)
+		}
 	}
 	return nil
 }
@@ -62,14 +70,27 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
 	}
+	var body []byte
+	var err error
 	switch opt.Format {
 	case "pgm":
-		return codec.EncodePGM(src.W, src.H, src.Pix)
+		body, err = codec.EncodePGM(src.W, src.H, src.Pix)
 	case "bmp":
-		return codec.EncodeBMP(src.W, src.H, src.Pix)
+		body, err = codec.EncodeBMP(src.W, src.H, src.Pix)
 	default:
-		return codec.EncodeRLE(src.W, src.H, src.Pix)
+		body, err = codec.EncodeRLE(src.W, src.H, src.Pix)
 	}
+	if err != nil {
+		return nil, err
+	}
+	if opt.Checksum {
+		c, err := resolveCRC(opt)
+		if err != nil {
+			return nil, err
+		}
+		body = seal(body, opt.Format, c)
+	}
+	return body, nil
 }
 
 // Decode 把字节流解码成灰度图。
@@ -79,6 +100,16 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	}
 	if err := opt.validate(); err != nil {
 		return nil, err
+	}
+	if opt.Checksum {
+		c, err := resolveCRC(opt)
+		if err != nil {
+			return nil, err
+		}
+		data, err = unseal(data, opt.Format, c)
+		if err != nil {
+			return nil, err
+		}
 	}
 	var w, h int
 	var pix []uint8
