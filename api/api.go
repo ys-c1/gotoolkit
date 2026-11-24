@@ -12,8 +12,9 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format   string // pgm | bmp | rle | blk，默认 pgm
+	Gain     int    // 亮度增益百分比，0 表示不调整，默认 0
+	BlockLen int    // blk 格式的块边长（像素），0 表示用默认值 codec.DefaultBlockLen
 }
 
 // Image 是解码后的灰度图。
@@ -30,18 +31,31 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options {
+	return Options{Format: "pgm", Gain: 0, BlockLen: codec.DefaultBlockLen}
+}
 
 func (o Options) validate() error {
 	switch o.Format {
-	case "pgm", "bmp", "rle":
+	case "pgm", "bmp", "rle", "blk":
 	default:
 		return fmt.Errorf("%w: %q", ErrUnknownFormat, o.Format)
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.BlockLen < 0 || o.BlockLen > 255 {
+		return fmt.Errorf("%w: BlockLen=%d 超出 [0,255]", ErrBadOption, o.BlockLen)
+	}
 	return nil
+}
+
+// blockLen 返回实际块长：0 取默认值。
+func (o Options) blockLen() int {
+	if o.BlockLen == 0 {
+		return codec.DefaultBlockLen
+	}
+	return o.BlockLen
 }
 
 // Encode 把灰度图编码成指定格式。
@@ -67,6 +81,8 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 		return codec.EncodePGM(src.W, src.H, src.Pix)
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
+	case "blk":
+		return codec.EncodeBLK(src.W, src.H, opt.blockLen(), src.Pix)
 	default:
 		return codec.EncodeRLE(src.W, src.H, src.Pix)
 	}
@@ -88,6 +104,8 @@ func Decode(data []byte, opt Options) (*Image, error) {
 		w, h, pix, err = codec.DecodePGM(data)
 	case "bmp":
 		w, h, pix, err = codec.DecodeBMP(data)
+	case "blk":
+		w, h, _, pix, err = codec.DecodeBLK(data)
 	default:
 		w, h, pix, err = codec.DecodeRLE(data)
 	}

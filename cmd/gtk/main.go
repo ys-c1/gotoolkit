@@ -25,7 +25,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle|blk --in F --out F [--gain N] [--block L]")
 }
 
 func runEncode(args []string) int {
@@ -34,6 +34,7 @@ func runEncode(args []string) int {
 	in := fs.String("in", "", "输入 PGM")
 	out := fs.String("out", "", "输出文件")
 	gain := fs.Int("gain", 0, "亮度增益百分比")
+	block := fs.Int("block", 0, "blk 格式块边长（像素），0 用默认值 8")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -51,7 +52,7 @@ func runEncode(args []string) int {
 		fmt.Fprintln(os.Stderr, "解码失败:", err)
 		return 1
 	}
-	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain})
+	body, err := api.Encode(img, api.Options{Format: *format, Gain: *gain, BlockLen: *block})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "编码失败:", err)
 		return 1
