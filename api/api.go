@@ -14,6 +14,12 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	// LumaExpand 只对 bmp 生效：为 true 时把灰度展开成 R/G/B 三通道，
+	// 系数由亮度守恒反解（见 expand.Coefficients），解码时按同一权重收回。
+	// 默认 false，此时输出字节流与原有灰度路径逐字节一致。
+	// 编码结果在 BMP 头的 biReserved 处带 "LUM1" 标记，解码自动识别；
+	// 对不带标记的旧 BMP，LumaExpand 不影响解码路径。
+	LumaExpand bool
 }
 
 // Image 是解码后的灰度图。
@@ -41,6 +47,9 @@ func (o Options) validate() error {
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.LumaExpand && o.Format != "bmp" {
+		return fmt.Errorf("%w: LumaExpand 只对 bmp 生效，Format=%q", ErrBadOption, o.Format)
+	}
 	return nil
 }
 
@@ -66,6 +75,9 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	case "pgm":
 		return codec.EncodePGM(src.W, src.H, src.Pix)
 	case "bmp":
+		if opt.LumaExpand {
+			return codec.EncodeBMPLuma(src.W, src.H, src.Pix)
+		}
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
 	default:
 		return codec.EncodeRLE(src.W, src.H, src.Pix)
@@ -87,7 +99,9 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	case "pgm":
 		w, h, pix, err = codec.DecodePGM(data)
 	case "bmp":
-		w, h, pix, err = codec.DecodeBMP(data)
+		// 展开与否写在 BMP 自身（biReserved 的 "LUM1"），不依赖调用方
+		// 是否记得传 LumaExpand；旧灰度 BMP 仍走原路径。
+		w, h, pix, err = codec.DecodeBMPAny(data)
 	default:
 		w, h, pix, err = codec.DecodeRLE(data)
 	}
