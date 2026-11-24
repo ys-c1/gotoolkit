@@ -12,8 +12,10 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format  string  // pgm | bmp | rle，默认 pgm
+	Gain    int     // 亮度增益百分比，0 表示不调整，默认 0
+	Buckets int     // 量化桶数（重建电平数），0 或 256 表示不量化，否则须在 [2,256]
+	Dither  float64 // 抖动强度 s∈[0,1]，0 关闭抖动；Buckets=256 时该参数无作用
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +32,9 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options {
+	return Options{Format: "pgm", Gain: 0, Buckets: 256, Dither: 0}
+}
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +44,12 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.Buckets != 0 && (o.Buckets < 2 || o.Buckets > 256) {
+		return fmt.Errorf("%w: Buckets=%d 超出 [2,256]（0 表示不量化）", ErrBadOption, o.Buckets)
+	}
+	if o.Dither < 0 || o.Dither > 1 {
+		return fmt.Errorf("%w: Dither=%v 超出 [0,1]", ErrBadOption, o.Dither)
 	}
 	return nil
 }
@@ -61,6 +71,9 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Buckets != 0 && opt.Buckets < 256 {
+		src = applyQuantize(src, opt.Buckets, opt.Dither)
 	}
 	switch opt.Format {
 	case "pgm":
@@ -114,4 +127,12 @@ func applyGain(img *Image, gain int) *Image {
 		out.Pix[i] = uint8(x)
 	}
 	return out
+}
+
+func applyQuantize(img *Image, buckets int, dither float64) *Image {
+	return &Image{
+		W:   img.W,
+		H:   img.H,
+		Pix: codec.Quantize(img.W, img.H, img.Pix, buckets, dither),
+	}
 }
