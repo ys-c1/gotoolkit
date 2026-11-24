@@ -7,8 +7,8 @@ func TestPGMHeader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(body[:9]) != "P5\n2 2\n255" {
-		t.Fatalf("头错误: %q", body[:9])
+	if string(body[:10]) != "P5\n2 2\n255\n" {
+		t.Fatalf("头错误: %q", body[:10])
 	}
 	w, h, pix, err := DecodePGM(body)
 	if err != nil || w != 2 || h != 2 || len(pix) != 4 {
