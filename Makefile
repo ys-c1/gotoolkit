@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden guard clean
 
 all: test
 
@@ -12,6 +12,9 @@ build:
 
 golden:
 	$(GO) run ./ref
+
+guard:
+	$(GO) run ./cmd/guard
 
 clean:
 	rm -rf build
