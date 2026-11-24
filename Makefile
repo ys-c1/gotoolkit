@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build golden clean lab
 
 all: test
 
@@ -9,6 +9,9 @@ test:
 
 build:
 	$(GO) build -o build/gtk ./cmd/gtk
+
+lab:
+	$(GO) run ./cmd/corruption-lab --out artifacts/corruption-lab
 
 golden:
 	$(GO) run ./ref

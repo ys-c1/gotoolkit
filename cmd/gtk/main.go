@@ -18,6 +18,10 @@ func main() {
 		os.Exit(runEncode(os.Args[2:]))
 	case "decode":
 		os.Exit(runDecode(os.Args[2:]))
+	case "manifest":
+		os.Exit(runManifest(os.Args[2:]))
+	case "recover":
+		os.Exit(runRecover(os.Args[2:]))
 	default:
 		usage()
 		os.Exit(2)
@@ -26,6 +30,8 @@ func main() {
 
 func usage() {
 	fmt.Fprintln(os.Stderr, "usage: gtk encode|decode --format pgm|bmp|rle --in F --out F [--gain N]")
+	fmt.Fprintln(os.Stderr, "       gtk manifest --in F --out manifest.json [--block-size 32]")
+	fmt.Fprintln(os.Stderr, "       gtk recover --in corrupted.pgm --out recovered.png --manifest m.json [--original orig.pgm] [--report r.json]")
 }
 
 func runEncode(args []string) int {
