@@ -2,7 +2,7 @@
 
 分层的灰度图编解码工具，用于出题基线。
 
-- `api/` 唯一对外入口，`Options` 是可配参数的公共声明处
+- `api/` 唯一对外入口，`Options` 是可配参数的公共声明处（`Gain` 亮度增益、`Step` 量化步长，步长的体积–误差分析见 `docs/quant-step.md`）
 - `internal/codec/` 三个格式实现，外部不可引用
 - `cmd/gtk/` 命令行，`encode` 与 `decode` 两条子命令
 - `testdata/golden/` 三种格式的基准字节，由 `ref/` 生成，**不许改**

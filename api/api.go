@@ -14,6 +14,7 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Step   int    // 量化步长，0 或 1 表示不量化，默认 1；量化有损，Decode 忽略
 }
 
 // Image 是解码后的灰度图。
@@ -41,6 +42,9 @@ func (o Options) validate() error {
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.Step < 0 || o.Step > 255 {
+		return fmt.Errorf("%w: Step=%d 超出 [0,255]", ErrBadOption, o.Step)
+	}
 	return nil
 }
 
@@ -62,6 +66,9 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
 	}
+	if opt.Step > 1 {
+		src = applyStep(src, opt.Step)
+	}
 	switch opt.Format {
 	case "pgm":
 		return codec.EncodePGM(src.W, src.H, src.Pix)
@@ -73,6 +80,7 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 }
 
 // Decode 把字节流解码成灰度图。
+// Step 是有损量化，无法逆变换，解码时忽略。
 func Decode(data []byte, opt Options) (*Image, error) {
 	if len(data) == 0 {
 		return nil, ErrTruncated
@@ -99,6 +107,21 @@ func Decode(data []byte, opt Options) (*Image, error) {
 		img = applyGain(img, -opt.Gain)
 	}
 	return img, nil
+}
+
+// applyStep 按步长做中点重建均匀量化：q = round(v/step)*step，截断到 255。
+// 分析见 docs/quant-step.md。
+func applyStep(img *Image, step int) *Image {
+	out := &Image{W: img.W, H: img.H, Pix: make([]uint8, len(img.Pix))}
+	half := step / 2
+	for i, v := range img.Pix {
+		q := (int(v) + half) / step * step
+		if q > 255 {
+			q = 255
+		}
+		out.Pix[i] = uint8(q)
+	}
+	return out
 }
 
 func applyGain(img *Image, gain int) *Image {
