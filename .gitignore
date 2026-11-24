@@ -1,2 +1,5 @@
 build/
 *.bin.tmp
+
+# 对拍测试运行产物（差异图仅在出现分叉时生成）
+artifacts/diffmaps/
