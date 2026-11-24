@@ -3,6 +3,7 @@ package codec
 import (
 	"encoding/binary"
 	"errors"
+	"fmt"
 )
 
 // EncodeBMP 输出 24 位灰度 BMP（三通道同值），行按 4 字节对齐，自底向上。
@@ -36,21 +37,53 @@ func EncodeBMP(w, h int, pix []uint8) ([]byte, error) {
 	return out, nil
 }
 
-// DecodeBMP 解析本仓库自己产出的 24 位 BMP。
+// DecodeBMP 解析本仓库自己产出的 24 位 BMP。失败时返回 *DecodeError，精确定位到字节。
 func DecodeBMP(data []byte) (int, int, []uint8, error) {
-	if len(data) < 54 || string(data[0:2]) != "BM" {
-		return 0, 0, nil, errors.New("不是 BMP 流")
+	if len(data) < 2 {
+		return 0, 0, nil, &DecodeError{Code: CodeBMPShort, Format: "bmp",
+			Offset: len(data), Want: "魔数 'BM'", Got: -1,
+			Detail: fmt.Sprintf("流只有 %d 字节", len(data))}
+	}
+	if data[0] != 'B' {
+		return 0, 0, nil, &DecodeError{Code: CodeBMPMagic, Format: "bmp",
+			Offset: 0, Want: "'B' (0x42)", Got: int(data[0])}
+	}
+	if data[1] != 'M' {
+		return 0, 0, nil, &DecodeError{Code: CodeBMPMagic, Format: "bmp",
+			Offset: 1, Want: "'M' (0x4D)", Got: int(data[1])}
+	}
+	if len(data) < 54 {
+		return 0, 0, nil, &DecodeError{Code: CodeBMPShort, Format: "bmp",
+			Offset: len(data), Want: "54 字节 BMP 头", Got: -1,
+			Detail: fmt.Sprintf("流只有 %d 字节", len(data))}
 	}
 	w := int(int32(binary.LittleEndian.Uint32(data[18:])))
 	h := int(int32(binary.LittleEndian.Uint32(data[22:])))
 	bpp := int(binary.LittleEndian.Uint16(data[28:]))
 	off := int(binary.LittleEndian.Uint32(data[10:]))
-	if w <= 0 || h <= 0 || bpp != 24 {
-		return 0, 0, nil, errors.New("BMP 头非法")
+	if w <= 0 || h <= 0 {
+		off18 := 18
+		if w > 0 {
+			off18 = 22
+		}
+		return 0, 0, nil, &DecodeError{Code: CodeBMPDim, Format: "bmp",
+			Offset: off18, Want: "正的画幅（int32 小端）", Got: gotAt(data, off18),
+			Detail: fmt.Sprintf("解析得 %dx%d", w, h)}
+	}
+	if bpp != 24 {
+		boff := 28 // 低字节应为 0x18
+		if data[28] == 24 {
+			boff = 29 // 低字节对，则高字节应为 0x00
+		}
+		return 0, 0, nil, &DecodeError{Code: CodeBMPBpp, Format: "bmp",
+			Offset: boff, Want: "bpp=24（偏移 28 为 0x18，偏移 29 为 0x00）", Got: int(data[boff]),
+			Detail: fmt.Sprintf("解析得 bpp=%d", bpp)}
 	}
 	rowSize := (w*3 + 3) &^ 3
 	if len(data) < off+rowSize*h {
-		return 0, 0, nil, errors.New("像素数据不足")
+		return 0, 0, nil, &DecodeError{Code: CodeBMPPixShort, Format: "bmp",
+			Offset: len(data), Want: fmt.Sprintf("第 %d 个像素数据字节", len(data)-off+1), Got: -1,
+			Detail: fmt.Sprintf("像素区起于偏移 %d，需 %d 字节，流内仅剩 %d", off, rowSize*h, len(data)-off)}
 	}
 	pix := make([]uint8, w*h)
 	for y := 0; y < h; y++ {

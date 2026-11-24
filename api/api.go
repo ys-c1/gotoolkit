@@ -29,6 +29,34 @@ var (
 	ErrTruncated     = errors.New("数据被截断")
 )
 
+// DecodeError 是三种格式统一的解码失败报告：错误码按格式分段，
+// 并带失败偏移与期望字节。Decode 返回的错误可用 errors.As 提取。
+type DecodeError = codec.DecodeError
+
+// 解码错误码按格式分段：PGM 1xxx，BMP 2xxx，RLE 3xxx。
+const (
+	CodePGMShort    = codec.CodePGMShort
+	CodePGMMagicP   = codec.CodePGMMagicP
+	CodePGMMagic5   = codec.CodePGMMagic5
+	CodePGMWidth    = codec.CodePGMWidth
+	CodePGMHeight   = codec.CodePGMHeight
+	CodePGMMaxVal   = codec.CodePGMMaxVal
+	CodePGMPixShort = codec.CodePGMPixShort
+
+	CodeBMPShort    = codec.CodeBMPShort
+	CodeBMPMagic    = codec.CodeBMPMagic
+	CodeBMPDim      = codec.CodeBMPDim
+	CodeBMPBpp      = codec.CodeBMPBpp
+	CodeBMPPixShort = codec.CodeBMPPixShort
+
+	CodeRLEShort    = codec.CodeRLEShort
+	CodeRLEMagic    = codec.CodeRLEMagic
+	CodeRLEDim      = codec.CodeRLEDim
+	CodeRLEOverrun  = codec.CodeRLEOverrun
+	CodeRLEPixShort = codec.CodeRLEPixShort
+	CodeRLEOddTail  = codec.CodeRLEOddTail
+)
+
 // DefaultOptions 返回默认参数。
 func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
 
