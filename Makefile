@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build analyze golden clean
 
 all: test
 
@@ -9,6 +9,9 @@ test:
 
 build:
 	$(GO) build -o build/gtk ./cmd/gtk
+
+analyze:
+	$(GO) run ./cmd/analyze --outdir artifacts/roundtrip
 
 golden:
 	$(GO) run ./ref
