@@ -14,3 +14,17 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 灰度映射（LUT）
+
+8/10/12 位深的 gamma 2.2 灰度查找表：逐点取整会在暗部产生倒挂，用累积最大值
+强制单调并对平台段做整数插值铺开。证明与误差界见 [`docs/graymap-proof.md`](docs/graymap-proof.md)。
+
+```
+go run ./cmd/gtk graymap --outdir artifacts      # 生成 LUT 与倒挂坐标 CSV
+python3 scripts/plot_graymap.py artifacts        # 绘制映射曲线图 PNG
+python3 scripts/verify_graymap.py artifacts      # 只读 CSV 的独立复核
+```
+
+- `internal/graymap/` 实现（含定理条件与端点/平台性质的单元测试）
+- `artifacts/lut_<bits>bit.csv`、`artifacts/inversions_<bits>bit.csv`、`artifacts/curve_<bits>bit.png`
