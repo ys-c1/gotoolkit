@@ -1,0 +1,9 @@
+mode,L,top,bottom,left,right,theory_2^L
+zero_pad,1,2,1,2,1,2
+zero_pad,2,4,3,4,3,4
+zero_pad,3,8,7,8,7,8
+zero_pad,4,16,15,16,15,16
+symmetric,1,0,0,0,0,2
+symmetric,2,0,0,0,0,4
+symmetric,3,0,0,0,0,8
+symmetric,4,0,0,0,0,16
