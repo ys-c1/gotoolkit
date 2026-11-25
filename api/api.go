@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"gotoolkit/internal/codec"
+	"gotoolkit/internal/quant"
 )
 
 // Options 是所有编解码参数的公共入口。
@@ -14,6 +15,7 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Depth  int    // 量化位深档位 b（2..8），0 表示不量化，默认 0
 }
 
 // Image 是解码后的灰度图。
@@ -30,7 +32,7 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, Depth: 0} }
 
 func (o Options) validate() error {
 	switch o.Format {
@@ -40,6 +42,10 @@ func (o Options) validate() error {
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.Depth != 0 && (o.Depth < quant.MinDepth || o.Depth > quant.MaxDepth) {
+		return fmt.Errorf("%w: Depth=%d 超出 [%d,%d]（0 表示不量化）",
+			ErrBadOption, o.Depth, quant.MinDepth, quant.MaxDepth)
 	}
 	return nil
 }
@@ -61,6 +67,13 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	src := img
 	if opt.Gain != 0 {
 		src = applyGain(img, opt.Gain)
+	}
+	if opt.Depth != 0 {
+		pix, err := quant.Reduce(src.Pix, opt.Depth)
+		if err != nil {
+			return nil, fmt.Errorf("%w: %v", ErrBadOption, err)
+		}
+		src = &Image{W: src.W, H: src.H, Pix: pix}
 	}
 	switch opt.Format {
 	case "pgm":
