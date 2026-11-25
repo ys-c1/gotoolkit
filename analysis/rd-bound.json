@@ -1,0 +1,60 @@
+{
+  "sigma": 32.0,
+  "metric": "MSE",
+  "rows": [
+    {
+      "target_bpp": 1.0,
+      "compression_ratio": 8.0,
+      "delta_gray_levels": 77.49182257381955,
+      "entropy_bpp": 1.0000000000000007,
+      "huffman_expected_bpp": 1.339514037573949,
+      "huffman_redundancy_bpp": 0.33951403757394827,
+      "d_enc_mse": 479.408437968868,
+      "d_lb_mse": 256.0,
+      "gap_abs_mse": 223.408437968868,
+      "gap_percent_vs_lb": 87.26892108158906,
+      "gap_percent_of_actual": 46.600856446205434,
+      "d_lb_at_huffman_rate_mse": 159.89399248274714,
+      "gap_at_huffman_rate_mse": 319.51444548612085,
+      "gap_percent_vs_huffman_lb": 199.8289244798219,
+      "psnr_enc_db": 21.323746871755567,
+      "psnr_lb_db": 24.04840395556061
+    },
+    {
+      "target_bpp": 2.0,
+      "compression_ratio": 4.0,
+      "delta_gray_levels": 34.638289394540735,
+      "entropy_bpp": 2.000000000000001,
+      "huffman_expected_bpp": 2.1053434472714554,
+      "huffman_redundancy_bpp": 0.1053434472714545,
+      "d_enc_mse": 99.98425181554325,
+      "d_lb_mse": 64.0,
+      "gap_abs_mse": 35.984251815543246,
+      "gap_percent_vs_lb": 56.225393461786325,
+      "gap_percent_of_actual": 35.98991957446367,
+      "d_lb_at_huffman_rate_mse": 55.30404522670937,
+      "gap_at_huffman_rate_mse": 44.680206588833876,
+      "gap_percent_vs_huffman_lb": 80.79012377064842,
+      "psnr_enc_db": 28.131487597499387,
+      "psnr_lb_db": 30.069003868840234
+    },
+    {
+      "target_bpp": 3.0,
+      "compression_ratio": 2.6666666666666665,
+      "delta_gray_levels": 16.7178638398822,
+      "entropy_bpp": 3.0,
+      "huffman_expected_bpp": 3.066325258606432,
+      "huffman_redundancy_bpp": 0.06632525860643179,
+      "d_enc_mse": 23.29058094740499,
+      "d_lb_mse": 16.0,
+      "gap_abs_mse": 7.29058094740499,
+      "gap_percent_vs_lb": 45.566130921281186,
+      "gap_percent_of_actual": 31.302701138578932,
+      "d_lb_at_huffman_rate_mse": 14.594465627398908,
+      "gap_at_huffman_rate_mse": 8.696115320006083,
+      "gap_percent_vs_huffman_lb": 59.58502039074619,
+      "psnr_enc_db": 34.45900039396107,
+      "psnr_lb_db": 36.08960378211985
+    }
+  ]
+}
