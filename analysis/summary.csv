@@ -1,0 +1,4 @@
+bits,K,empty_uniform,empty_optimal,mse_uniform,mse_optimal,delta_mse,reduction_pct,centroid_resid_optimal,centroid_resid_uniform
+4,16,5,0,23.5312,7.5938,-15.9375,67.73,0.4000,8.0000
+5,32,11,0,5.7188,1.8516,-3.8672,67.62,0.4286,4.0000
+6,64,23,0,1.5312,0.4609,-1.0703,69.90,0.5000,2.0000
