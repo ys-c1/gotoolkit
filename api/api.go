@@ -14,6 +14,9 @@ import (
 type Options struct {
 	Format string // pgm | bmp | rle，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	// RLECap 是 rle 格式单条游程的像素上限，取值 1..255。
+	// 0 表示沿用默认 255（计数为 1 字节的天然上限），默认 0。
+	RLECap int
 }
 
 // Image 是解码后的灰度图。
@@ -41,7 +44,18 @@ func (o Options) validate() error {
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
 	}
+	if o.RLECap < 0 || o.RLECap > 255 {
+		return fmt.Errorf("%w: RLECap=%d 超出 [0,255]", ErrBadOption, o.RLECap)
+	}
 	return nil
+}
+
+// rleCap 把 Options 的零值回落为默认上限 255。
+func (o Options) rleCap() int {
+	if o.RLECap == 0 {
+		return 255
+	}
+	return o.RLECap
 }
 
 // Encode 把灰度图编码成指定格式。
@@ -68,7 +82,7 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
 	default:
-		return codec.EncodeRLE(src.W, src.H, src.Pix)
+		return codec.EncodeRLEWithCap(src.W, src.H, src.Pix, opt.rleCap())
 	}
 }
 
