@@ -12,9 +12,13 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
+	Format string // pgm | bmp | rle | gtbk，默认 pgm
 	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Block  int    // gtbk 块长（2 的幂，不小于 2）；0 表示用默认块长 8
 }
+
+// 默认块长，Options.Block 为 0 时使用。
+const DefaultBlock = 8
 
 // Image 是解码后的灰度图。
 type Image struct {
@@ -34,12 +38,19 @@ func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
 
 func (o Options) validate() error {
 	switch o.Format {
-	case "pgm", "bmp", "rle":
+	case "pgm", "bmp", "rle", "gtbk":
 	default:
 		return fmt.Errorf("%w: %q", ErrUnknownFormat, o.Format)
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	block := o.Block
+	if block == 0 {
+		block = DefaultBlock
+	}
+	if o.Format == "gtbk" && (block < 2 || block&(block-1) != 0) {
+		return fmt.Errorf("%w: Block=%d 必须是不小于 2 的 2 的幂", ErrBadOption, o.Block)
 	}
 	return nil
 }
@@ -67,6 +78,12 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 		return codec.EncodePGM(src.W, src.H, src.Pix)
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
+	case "gtbk":
+		block := opt.Block
+		if block == 0 {
+			block = DefaultBlock
+		}
+		return codec.EncodeGTBK(src.W, src.H, src.Pix, block)
 	default:
 		return codec.EncodeRLE(src.W, src.H, src.Pix)
 	}
@@ -88,6 +105,8 @@ func Decode(data []byte, opt Options) (*Image, error) {
 		w, h, pix, err = codec.DecodePGM(data)
 	case "bmp":
 		w, h, pix, err = codec.DecodeBMP(data)
+	case "gtbk":
+		w, h, pix, err = codec.DecodeGTBK(data)
 	default:
 		w, h, pix, err = codec.DecodeRLE(data)
 	}

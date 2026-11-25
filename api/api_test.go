@@ -16,9 +16,16 @@ func sample() *Image {
 }
 
 func TestRoundTripAllFormats(t *testing.T) {
-	for _, f := range []string{"pgm", "bmp", "rle"} {
+	for _, f := range []string{"pgm", "bmp", "rle", "gtbk"} {
 		img := sample()
-		body, err := Encode(img, Options{Format: f})
+		if f == "gtbk" {
+			// 现有 sample 为 4x3，gtbk 要求整除；改用 4x4。
+			img = &Image{W: 4, H: 4, Pix: make([]uint8, 16)}
+			for i := range img.Pix {
+				img.Pix[i] = uint8(i*11 + 3)
+			}
+		}
+		body, err := Encode(img, Options{Format: f, Block: 2})
 		if err != nil {
 			t.Fatalf("%s 编码失败: %v", f, err)
 		}
@@ -32,6 +39,23 @@ func TestRoundTripAllFormats(t *testing.T) {
 		if !bytes.Equal(got.Pix, img.Pix) {
 			t.Fatalf("%s 像素不一致", f)
 		}
+	}
+}
+
+func TestGTBKDefaultAndBadBlock(t *testing.T) {
+	img := &Image{W: 8, H: 8, Pix: make([]uint8, 64)}
+	for i := range img.Pix {
+		img.Pix[i] = uint8(i*5 + 1)
+	}
+	body, err := Encode(img, Options{Format: "gtbk"})
+	if err != nil {
+		t.Fatalf("默认块长编码失败: %v", err)
+	}
+	if int(body[8]) != DefaultBlock {
+		t.Fatalf("默认块长应为 %d", DefaultBlock)
+	}
+	if _, err := Encode(img, Options{Format: "gtbk", Block: 3}); err == nil {
+		t.Fatal("非 2 的幂块长应报错")
 	}
 }
 

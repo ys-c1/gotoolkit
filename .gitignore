@@ -1,2 +1,4 @@
 build/
 *.bin.tmp
+# GTBK 实验的可再生中间产物（编码流与解码 PGM），由 run_experiment.py 重建
+artifacts/work/
