@@ -14,3 +14,19 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 单调重建电平（步长序列 → 单调电平）
+
+给定任意步长序列与“凑出来”的（可能非单调）名义电平，用两步构造得到最小二乘
+最优的单调重建电平（PAVA / 保序回归），最优性按互补松弛 KKT 核验：
+
+```
+go run ./cmd/levelreport            # 三档步长的电平、逐对单调性、误差与预测
+go run ./cmd/levelreport -json      # 结构化结果
+go test ./internal/monolevel -v     # 证明性测试（任意步长、穷举最优、50 万组前缀引理）
+```
+
+证明与三组实测数据见 `docs/monotone-levels.md`，落盘报告见
+`artifacts/monolevel/`。对外入口为 `api.MonotoneReconstruct` 与
+`api.AnalyzeQuantTable`。
+
