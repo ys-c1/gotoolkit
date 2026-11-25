@@ -96,22 +96,55 @@ func Decode(data []byte, opt Options) (*Image, error) {
 	}
 	img := &Image{W: w, H: h, Pix: pix}
 	if opt.Gain != 0 {
-		img = applyGain(img, -opt.Gain)
+		if opt.Gain == -100 {
+			// 正变换斜率 a=(100+g)/100=0，全域被压成 0，代数上不可逆。
+			return nil, fmt.Errorf("%w: Gain=-100 正变换不可逆，无法还原", ErrBadOption)
+		}
+		img = applyGainInverse(img, opt.Gain)
 	}
 	return img, nil
 }
 
+// applyGain 是编码侧的正变换：y = round(x·(100+g)/100)，钳到 [0,255]。
 func applyGain(img *Image, gain int) *Image {
 	out := &Image{W: img.W, H: img.H, Pix: make([]uint8, len(img.Pix))}
 	for i, v := range img.Pix {
-		x := int(v) + int(v)*gain/100
-		if x < 0 {
-			x = 0
-		}
-		if x > 255 {
-			x = 255
-		}
-		out.Pix[i] = uint8(x)
+		out.Pix[i] = uint8(gainFwd(int(v), gain, 255))
 	}
 	return out
+}
+
+// applyGainInverse 是解码侧的逆变换：x̂ = round(y·100/(100+g))。
+// 与 applyGain 互为代数逆：无量化且不饱和时严格恒等；
+// 量化后误差 |Δ| ≤ ⌊(b+1)/2⌋ LSB，b = 100/(100+g)。
+// 证明与位深关系见 docs/gain-roundtrip.md。
+func applyGainInverse(img *Image, gain int) *Image {
+	out := &Image{W: img.W, H: img.H, Pix: make([]uint8, len(img.Pix))}
+	for i, v := range img.Pix {
+		out.Pix[i] = uint8(gainInv(int(v), gain, 255))
+	}
+	return out
+}
+
+// gainFwd 正变换标量形式。max 为满量程：8 位取 255，n 位取 2^n-1。
+func gainFwd(x, g, max int) int {
+	y := (x*(100+g) + 50) / 100 // 四舍五入，不用截断
+	return clampInt(y, max)
+}
+
+// gainInv 逆变换标量形式。要求 g > -100（调用方保证）。
+func gainInv(y, g, max int) int {
+	den := 100 + g
+	x := (y*100 + den/2) / den // 四舍五入
+	return clampInt(x, max)
+}
+
+func clampInt(v, max int) int {
+	if v < 0 {
+		return 0
+	}
+	if v > max {
+		return max
+	}
+	return v
 }
