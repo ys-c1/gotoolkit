@@ -14,3 +14,14 @@ make build
 ./build/gtk encode --format bmp --in a.pgm --out a.bmp
 ./build/gtk decode --format bmp --in a.bmp --out b.pgm
 ```
+
+## 位深提升映射分析
+
+`internal/bitdepth` 给出 6-bit → 7/8/9-bit 的约束映射、位移空档放大公式与峰偏断言；
+可复算图表和报告由下面的脚本生成：
+
+```
+python3 -I analysis/bitdepth_mapping.py --out artifacts/bitdepth_mapping
+```
+
+产物见 `artifacts/bitdepth_mapping/REPORT.md`，包含三档位深差表、公式证明和并排直方图。
