@@ -60,10 +60,33 @@ func TestRejects(t *testing.T) {
 	if _, err := Encode(img, Options{Format: "pgm", Gain: 500}); err == nil {
 		t.Fatal("增益越界应报错")
 	}
+	if _, err := Encode(img, Options{Format: "pred", PredOrder: 9}); err == nil {
+		t.Fatal("预测阶数越界应报错")
+	}
 	if _, err := Encode(&Image{W: 0, H: 1}, Options{Format: "pgm"}); err == nil {
 		t.Fatal("画幅为零应报错")
 	}
 	if _, err := Decode(nil, Options{Format: "pgm"}); err == nil {
 		t.Fatal("空数据应报错")
+	}
+}
+
+func TestPredRoundTripAndAutoOrder(t *testing.T) {
+	img := sample()
+	for _, opt := range []Options{
+		{Format: "pred", PredOrder: 3},
+		{Format: "pred", PredOrder: 4, AutoOrder: true},
+	} {
+		body, err := Encode(img, opt)
+		if err != nil {
+			t.Fatalf("pred 编码失败: %v", err)
+		}
+		got, err := Decode(body, Options{Format: "pred"})
+		if err != nil {
+			t.Fatalf("pred 解码失败: %v", err)
+		}
+		if !bytes.Equal(got.Pix, img.Pix) {
+			t.Fatal("pred 往返像素不一致")
+		}
 	}
 }

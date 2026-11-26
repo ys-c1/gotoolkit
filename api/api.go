@@ -12,8 +12,10 @@ import (
 // Options 是所有编解码参数的公共入口。
 // 新增可配参数必须加在这里并写明默认值，否则调用方无法设置。
 type Options struct {
-	Format string // pgm | bmp | rle，默认 pgm
-	Gain   int    // 亮度增益百分比，0 表示不调整，默认 0
+	Format    string // pgm | bmp | rle | pred，默认 pgm
+	Gain      int    // 亮度增益百分比，0 表示不调整，默认 0
+	PredOrder int    // pred 格式的预测阶数 0..4，默认 0
+	AutoOrder bool   // 阶数开关：仅在残差方差比 <= 1 时加阶，默认 false
 }
 
 // Image 是解码后的灰度图。
@@ -30,16 +32,19 @@ var (
 )
 
 // DefaultOptions 返回默认参数。
-func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0} }
+func DefaultOptions() Options { return Options{Format: "pgm", Gain: 0, PredOrder: 0, AutoOrder: false} }
 
 func (o Options) validate() error {
 	switch o.Format {
-	case "pgm", "bmp", "rle":
+	case "pgm", "bmp", "rle", "pred":
 	default:
 		return fmt.Errorf("%w: %q", ErrUnknownFormat, o.Format)
 	}
 	if o.Gain < -100 || o.Gain > 100 {
 		return fmt.Errorf("%w: Gain=%d 超出 [-100,100]", ErrBadOption, o.Gain)
+	}
+	if o.PredOrder < 0 || o.PredOrder > codec.MaxOrder {
+		return fmt.Errorf("%w: PredOrder=%d 超出 [0,%d]", ErrBadOption, o.PredOrder, codec.MaxOrder)
 	}
 	return nil
 }
@@ -67,6 +72,12 @@ func Encode(img *Image, opt Options) ([]byte, error) {
 		return codec.EncodePGM(src.W, src.H, src.Pix)
 	case "bmp":
 		return codec.EncodeBMP(src.W, src.H, src.Pix)
+	case "pred":
+		order := opt.PredOrder
+		if opt.AutoOrder {
+			_, order = codec.ChooseOrder(src.W, src.H, src.Pix, opt.PredOrder)
+		}
+		return codec.EncodePRED(src.W, src.H, src.Pix, order)
 	default:
 		return codec.EncodeRLE(src.W, src.H, src.Pix)
 	}
@@ -88,6 +99,8 @@ func Decode(data []byte, opt Options) (*Image, error) {
 		w, h, pix, err = codec.DecodePGM(data)
 	case "bmp":
 		w, h, pix, err = codec.DecodeBMP(data)
+	case "pred":
+		w, h, pix, err = codec.DecodePRED(data)
 	default:
 		w, h, pix, err = codec.DecodeRLE(data)
 	}
