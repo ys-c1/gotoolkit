@@ -1,0 +1,2052 @@
+{
+  "sweep": {
+    "A_linear": {
+      "bilinear": {
+        "R": {
+          "g_interior": 0.9000000000000001,
+          "slope_per_delta": {
+            "-0.5": -0.5000000000000001,
+            "-0.25": -0.24999999999998873,
+            "0.25": 0.24999999999998257,
+            "0.5": 0.49999999999999695
+          },
+          "slope_over_delta": [
+            1.0000000000000002,
+            0.9999999999999549,
+            0.9999999999999303,
+            0.9999999999999939
+          ],
+          "k_drift": 0.8999999999999989,
+          "k_over_g": 0.9999999999999987
+        },
+        "G": {
+          "g_interior": 1.2,
+          "slope_per_delta": {
+            "-0.5": -0.5000000000000122,
+            "-0.25": -0.2500000000000125,
+            "0.25": 0.25000000000000555,
+            "0.5": 0.5000000000000074
+          },
+          "slope_over_delta": [
+            1.0000000000000244,
+            1.00000000000005,
+            1.0000000000000222,
+            1.0000000000000149
+          ],
+          "k_drift": 1.1999999999999988,
+          "k_over_g": 0.9999999999999991
+        },
+        "B": {
+          "g_interior": 1.05,
+          "slope_per_delta": {
+            "-0.5": -0.49999999999991235,
+            "-0.25": -0.24999999999995,
+            "0.25": 0.24999999999991274,
+            "0.5": 0.49999999999987815
+          },
+          "slope_over_delta": [
+            0.9999999999998247,
+            0.9999999999998,
+            0.999999999999651,
+            0.9999999999997563
+          ],
+          "k_drift": 1.0499999999999998,
+          "k_over_g": 0.9999999999999998
+        }
+      },
+      "bicubic": {
+        "R": {
+          "g_interior": 0.9,
+          "slope_per_delta": {
+            "-0.5": -0.4999999999999944,
+            "-0.25": -0.24999999999997646,
+            "0.25": 0.24999999999997619,
+            "0.5": 0.4999999999999778
+          },
+          "slope_over_delta": [
+            0.9999999999999888,
+            0.9999999999999059,
+            0.9999999999999047,
+            0.9999999999999556
+          ],
+          "k_drift": 0.8999999999999991,
+          "k_over_g": 0.999999999999999
+        },
+        "G": {
+          "g_interior": 1.2,
+          "slope_per_delta": {
+            "-0.5": -0.5000000000000111,
+            "-0.25": -0.25000000000000905,
+            "0.25": 0.2500000000000039,
+            "0.5": 0.5000000000000074
+          },
+          "slope_over_delta": [
+            1.0000000000000222,
+            1.0000000000000362,
+            1.0000000000000155,
+            1.0000000000000149
+          ],
+          "k_drift": 1.1999999999999988,
+          "k_over_g": 0.9999999999999991
+        },
+        "B": {
+          "g_interior": 1.05,
+          "slope_per_delta": {
+            "-0.5": -0.49999999999997274,
+            "-0.25": -0.2499999999999905,
+            "0.25": 0.2499999999999659,
+            "0.5": 0.4999999999999467
+          },
+          "slope_over_delta": [
+            0.9999999999999455,
+            0.999999999999962,
+            0.9999999999998636,
+            0.9999999999998934
+          ],
+          "k_drift": 1.0500000000000014,
+          "k_over_g": 1.0000000000000013
+        }
+      }
+    },
+    "B_smooth": {
+      "bilinear": {
+        "R": {
+          "g_interior": 0.022286698403217144,
+          "slope_per_delta": {
+            "-0.5": -0.5002322452057943,
+            "-0.25": -0.2501090177411643,
+            "0.25": 0.25009480801769657,
+            "0.5": 0.500175406311925
+          },
+          "slope_over_delta": [
+            1.0004644904115887,
+            1.0004360709646571,
+            1.0003792320707863,
+            1.00035081262385
+          ],
+          "k_drift": 0.022310063567099768,
+          "k_over_g": 1.0010483905448844
+        },
+        "G": {
+          "g_interior": -0.04696186401286972,
+          "slope_per_delta": {
+            "-0.5": -0.5005128389337548,
+            "-0.25": -0.2502564194668764,
+            "0.25": 0.25025641946687727,
+            "0.5": 0.5005128389337514
+          },
+          "slope_over_delta": [
+            1.0010256778675095,
+            1.0010256778675055,
+            1.001025677867509,
+            1.0010256778675028
+          ],
+          "k_drift": -0.04701056330884531,
+          "k_over_g": 1.0010369966567392
+        },
+        "B": {
+          "g_interior": -0.03171065197349511,
+          "slope_per_delta": {
+            "-0.5": -0.5003673800984382,
+            "-0.25": -0.25018308896404895,
+            "0.25": 0.25018188679370507,
+            "0.5": 0.500362571417068
+          },
+          "slope_over_delta": [
+            1.0007347601968763,
+            1.0007323558561958,
+            1.0007275471748203,
+            1.000725142834136
+          ],
+          "k_drift": -0.03173417757265462,
+          "k_over_g": 1.0007418831747508
+        }
+      },
+      "bicubic": {
+        "R": {
+          "g_interior": 0.02231062475592438,
+          "slope_per_delta": {
+            "-0.5": -0.5002322452057935,
+            "-0.25": -0.25010901774116623,
+            "0.25": 0.2500948080176974,
+            "0.5": 0.5001754063119271
+          },
+          "slope_over_delta": [
+            1.000464490411587,
+            1.000436070964665,
+            1.0003792320707896,
+            1.0003508126238543
+          ],
+          "k_drift": 0.022334015003969004,
+          "k_over_g": 1.0010483905448866
+        },
+        "G": {
+          "g_interior": -0.047034611280042084,
+          "slope_per_delta": {
+            "-0.5": -0.5005128457567372,
+            "-0.25": -0.25025642287836747,
+            "0.25": 0.2502564228783713,
+            "0.5": 0.5005128457567426
+          },
+          "slope_over_delta": [
+            1.0010256915134743,
+            1.0010256915134699,
+            1.0010256915134852,
+            1.0010256915134852
+          ],
+          "k_drift": -0.047083386014692766,
+          "k_over_g": 1.0010369966567871
+        },
+        "B": {
+          "g_interior": -0.031745835981848686,
+          "slope_per_delta": {
+            "-0.5": -0.5003673836354999,
+            "-0.25": -0.25018309137939465,
+            "0.25": 0.25018189050268,
+            "0.5": 0.5003625801286505
+          },
+          "slope_over_delta": [
+            1.0007347672709999,
+            1.0007323655175786,
+            1.00072756201072,
+            1.000725160257301
+          ],
+          "k_drift": -0.03176938768343205,
+          "k_over_g": 1.0007418831747519
+        }
+      }
+    },
+    "C_natural": {
+      "bilinear": {
+        "R": {
+          "g_interior": 0.24106848652961332,
+          "slope_per_delta": {
+            "-0.5": -0.5008678361268339,
+            "-0.25": -0.2504456136849186,
+            "0.25": 0.250469004927921,
+            "0.5": 0.5009614010988477
+          },
+          "slope_over_delta": [
+            1.0017356722536679,
+            1.0017824547396743,
+            1.001876019711684,
+            1.0019228021976954
+          ],
+          "k_drift": 0.24131244146322298,
+          "k_over_g": 1.0010119735562353
+        },
+        "G": {
+          "g_interior": -0.18704691109936808,
+          "slope_per_delta": {
+            "-0.5": -0.12134833630087931,
+            "-0.25": -0.0606758662906873,
+            "0.25": 0.06067926257118327,
+            "0.5": 0.12136192142286216
+          },
+          "slope_over_delta": [
+            0.24269667260175862,
+            0.2427034651627492,
+            0.2427170502847331,
+            0.24272384284572432
+          ],
+          "k_drift": -0.1870643248294782,
+          "k_over_g": 1.0000930981966385
+        },
+        "B": {
+          "g_interior": 0.03012411864515067,
+          "slope_per_delta": {
+            "-0.5": -0.06689733076229802,
+            "-0.25": -0.03345284512626306,
+            "0.25": 0.03346120461649061,
+            "0.5": 0.06693076872320934
+          },
+          "slope_over_delta": [
+            0.13379466152459604,
+            0.13381138050505223,
+            0.13384481846596244,
+            0.13386153744641868
+          ],
+          "k_drift": 0.030141456967227698,
+          "k_over_g": 1.0005755628000694
+        }
+      },
+      "bicubic": {
+        "R": {
+          "g_interior": 0.24142482348131716,
+          "slope_per_delta": {
+            "-0.5": -0.5008790469475347,
+            "-0.25": -0.25045118559667734,
+            "0.25": 0.2504745098424923,
+            "0.5": 0.5009723439308045
+          },
+          "slope_over_delta": [
+            1.0017580938950694,
+            1.0018047423867094,
+            1.0018980393699692,
+            1.001944687861609
+          ],
+          "k_drift": 0.2416691447415059,
+          "k_over_g": 1.0010119972613654
+        },
+        "G": {
+          "g_interior": -0.18707205867547452,
+          "slope_per_delta": {
+            "-0.5": -0.0708506116982275,
+            "-0.25": -0.03542629284064265,
+            "0.25": 0.03542826682370069,
+            "0.5": 0.07085850763045931
+          },
+          "slope_over_delta": [
+            0.141701223396455,
+            0.1417051713625706,
+            0.14171306729480276,
+            0.14171701526091862
+          ],
+          "k_drift": -0.1870896273263962,
+          "k_over_g": 1.0000939138161309
+        },
+        "B": {
+          "g_interior": 0.030152654433430716,
+          "slope_per_delta": {
+            "-0.5": -0.03687574850660121,
+            "-0.25": -0.01844017024488572,
+            "0.25": 0.018444762228056,
+            "0.5": 0.03689411643928273
+          },
+          "slope_over_delta": [
+            0.07375149701320242,
+            0.07376068097954289,
+            0.073779048912224,
+            0.07378823287856547
+          ],
+          "k_drift": 0.03016986081318037,
+          "k_over_g": 1.0005706422891438
+        }
+      }
+    }
+  },
+  "blockwise": {
+    "A_linear": {
+      "bilinear": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.004569817961590277,
+          "phase_mae": 0.0023108200296260563,
+          "phase_maxabs": 0.024111158123839016,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.45000000000001705,
+            "G": 0.6000000000000512,
+            "B": 0.5250000000000625
+          },
+          "resid_rms": {
+            "R": 0.1609530152730876,
+            "G": 0.21460402036412002,
+            "B": 0.18777851781860586
+          },
+          "corrected_resid_max": {
+            "R": 0.10897216353154704,
+            "G": 0.13827393618007022,
+            "B": 0.09046496857081365
+          },
+          "corrected_resid_rms": {
+            "R": 0.011258684012121609,
+            "G": 0.014817091319692204,
+            "B": 0.012279933983595896
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.004642250548289039,
+              "phase_mae": 0.002318288654545605,
+              "phase_maxabs": 0.024111158123839016,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0032527034148023687,
+              "interior_curv_bound_max": 1.5789838572446656e-14,
+              "interior_struct_bound_max": 0.01783919196392794,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0074461626510156,
+              "drift_block_rmse": 0.0030286860559448734,
+              "meas_drift_absmean": 0.1170161284711238,
+              "pred_drift_absmean": 0.11614895456176713
+            },
+            "G": {
+              "phase_rmse": 0.004654278216947254,
+              "phase_mae": 0.0023296070188202193,
+              "phase_maxabs": 0.02401956564299601,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0032527034148032152,
+              "interior_curv_bound_max": 5.206609640457263e-15,
+              "interior_struct_bound_max": 0.017839191963931217,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0069018399276701,
+              "drift_block_rmse": 0.0037062310547358087,
+              "meas_drift_absmean": 0.15602150462816722,
+              "pred_drift_absmean": 0.1549274497021037
+            },
+            "B": {
+              "phase_rmse": 0.004408731419850814,
+              "phase_mae": 0.0022845644155123452,
+              "phase_maxabs": 0.021609913315185136,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.003252703414805741,
+              "interior_curv_bound_max": 2.706829469562284e-14,
+              "interior_struct_bound_max": 0.017839191963932372,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.004504274667101,
+              "drift_block_rmse": 0.002183113077325912,
+              "meas_drift_absmean": 0.13651881654964643,
+              "pred_drift_absmean": 0.1357543439791033
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.01815546294990185,
+          "phase_mae": 0.014037613711919339,
+          "phase_maxabs": 0.06904153508476993,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.45000000000001705,
+            "G": 0.6000000000000512,
+            "B": 0.5250000000000625
+          },
+          "resid_rms": {
+            "R": 0.1609530152730876,
+            "G": 0.21460402036412002,
+            "B": 0.18777851781860586
+          },
+          "corrected_resid_max": {
+            "R": 0.1066379402847133,
+            "G": 0.13508819882434864,
+            "B": 0.08531137518610876
+          },
+          "corrected_resid_rms": {
+            "R": 0.017529810534917294,
+            "G": 0.023259092303305806,
+            "B": 0.01998202384658314
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.01813542173102317,
+              "phase_mae": 0.01402166282437636,
+              "phase_maxabs": 0.06825026630622327,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0368082196666419,
+              "interior_curv_bound_max": 0.037760492566189977,
+              "interior_struct_bound_max": 0.11471477488154912,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0406960094545217,
+              "drift_block_rmse": 0.013042512081438638,
+              "meas_drift_absmean": 0.1170161284711238,
+              "pred_drift_absmean": 0.11230450758565846
+            },
+            "G": {
+              "phase_rmse": 0.018153217841758582,
+              "phase_mae": 0.01403189096187318,
+              "phase_maxabs": 0.06851498578416376,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.03680821966664427,
+              "interior_curv_bound_max": 0.03601719173103408,
+              "interior_struct_bound_max": 0.11471477488154658,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0400255436930317,
+              "drift_block_rmse": 0.017342724812329385,
+              "meas_drift_absmean": 0.15602150462816722,
+              "pred_drift_absmean": 0.14980528471410903
+            },
+            "B": {
+              "phase_rmse": 0.01817772442863426,
+              "phase_mae": 0.014059287349508467,
+              "phase_maxabs": 0.06904153508476993,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.03680821966664277,
+              "interior_curv_bound_max": 0.026335136277219114,
+              "interior_struct_bound_max": 0.11471477488154816,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0370117948847153,
+              "drift_block_rmse": 0.015077314977852302,
+              "meas_drift_absmean": 0.13651881654964643,
+              "pred_drift_absmean": 0.1313016211780369
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.036570190030709986,
+          "phase_mae": 0.028979787460113916,
+          "phase_maxabs": 0.09838172780614135,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.4486101133202567,
+            "G": 0.5981468177603517,
+            "B": 0.5233784655403326
+          },
+          "resid_rms": {
+            "R": 0.23943986278841783,
+            "G": 0.31925315038455737,
+            "B": 0.27934650658648774
+          },
+          "corrected_resid_max": {
+            "R": 0.46527289475045563,
+            "G": 0.6203638596672931,
+            "B": 0.5428183772088744
+          },
+          "corrected_resid_rms": {
+            "R": 0.06899087685607258,
+            "G": 0.09199359218794975,
+            "B": 0.0807445857847339
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.03659323196914236,
+              "phase_mae": 0.02901426779166877,
+              "phase_maxabs": 0.09838172780614035,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.09838172780614035,
+              "interior_curv_bound_max": 1.346354984714465e-14,
+              "interior_struct_bound_max": 0.15374557390518417,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0104739676117827,
+              "drift_block_rmse": 0.0053743762085170935,
+              "meas_drift_absmean": 0.20118445745477462,
+              "pred_drift_absmean": 0.1992031109151829
+            },
+            "G": {
+              "phase_rmse": 0.03657744083062142,
+              "phase_mae": 0.028993222326846792,
+              "phase_maxabs": 0.09838172780614135,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.09838172780614135,
+              "interior_curv_bound_max": 1.086685157743452e-14,
+              "interior_struct_bound_max": 0.15374557390518098,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0101442384193888,
+              "drift_block_rmse": 0.006799972315397749,
+              "meas_drift_absmean": 0.26824594327303264,
+              "pred_drift_absmean": 0.2656813035829122
+            },
+            "B": {
+              "phase_rmse": 0.03653987675104619,
+              "phase_mae": 0.028931872261826183,
+              "phase_maxabs": 0.09838172780613946,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.09838172780613946,
+              "interior_curv_bound_max": 2.308037116653369e-14,
+              "interior_struct_bound_max": 0.15374557390518517,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0092762132960045,
+              "drift_block_rmse": 0.005494781585499085,
+              "meas_drift_absmean": 0.2347152003639037,
+              "pred_drift_absmean": 0.2325952901272206
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.2565356755221047,
+          "phase_mae": 0.21471698721391408,
+          "phase_maxabs": 0.6143109773883417,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.4486101133202567,
+            "G": 0.5981468177603517,
+            "B": 0.5233784655403326
+          },
+          "resid_rms": {
+            "R": 0.23943986278841783,
+            "G": 0.31925315038455737,
+            "B": 0.27934650658648774
+          },
+          "corrected_resid_max": {
+            "R": 0.552879879649538,
+            "G": 0.7371731728660222,
+            "B": 0.6450265262577943
+          },
+          "corrected_resid_rms": {
+            "R": 0.20516522912776156,
+            "G": 0.27352313491221225,
+            "B": 0.23921437383272856
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.2565491936508193,
+              "phase_mae": 0.21474508352583263,
+              "phase_maxabs": 0.6143109773883405,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6143109773883405,
+              "interior_curv_bound_max": 0.0369440944364129,
+              "interior_struct_bound_max": 0.6564487657319821,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2690743109490814,
+              "drift_block_rmse": 0.19988206282891327,
+              "meas_drift_absmean": 0.20118445745477462,
+              "pred_drift_absmean": 0.07679800091519244
+            },
+            "G": {
+              "phase_rmse": 0.2565416702908227,
+              "phase_mae": 0.21473105258809705,
+              "phase_maxabs": 0.6143109773883411,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6143109773883411,
+              "interior_curv_bound_max": 0.035238484516942704,
+              "interior_struct_bound_max": 0.6564487657319806,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2686285171304312,
+              "drift_block_rmse": 0.26645095030740956,
+              "meas_drift_absmean": 0.26824594327303264,
+              "pred_drift_absmean": 0.10247567756711759
+            },
+            "B": {
+              "phase_rmse": 0.25651616145626566,
+              "phase_mae": 0.2146748255278126,
+              "phase_maxabs": 0.6143109773883417,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6143109773883417,
+              "interior_curv_bound_max": 0.03529362758415142,
+              "interior_struct_bound_max": 0.656448765731983,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2668292217244657,
+              "drift_block_rmse": 0.23287988314711316,
+              "meas_drift_absmean": 0.2347152003639037,
+              "pred_drift_absmean": 0.08997004113855857
+            }
+          }
+        }
+      },
+      "bicubic": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.003342449697480731,
+          "phase_mae": 0.0014579891422941266,
+          "phase_maxabs": 0.018233203265677456,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.45526628019999293,
+            "G": 0.6070217069332671,
+            "B": 0.5311439935666442
+          },
+          "resid_rms": {
+            "R": 0.16128177631402257,
+            "G": 0.21504236841869506,
+            "B": 0.1881620723663606
+          },
+          "corrected_resid_max": {
+            "R": 0.14818106552289123,
+            "G": 0.18826108959677867,
+            "B": 0.12705104046364113
+          },
+          "corrected_resid_rms": {
+            "R": 0.011908865019836058,
+            "G": 0.0155313558126418,
+            "B": 0.012226013640390629
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.003346011516678822,
+              "phase_mae": 0.0014511831281082952,
+              "phase_maxabs": 0.018064456681883723,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0014244372774060432,
+              "interior_curv_bound_max": 2.227446202689003e-14,
+              "interior_struct_bound_max": 0.015440036100672344,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0074727367700538,
+              "drift_block_rmse": 0.0030570345583400714,
+              "meas_drift_absmean": 0.1172951559754569,
+              "pred_drift_absmean": 0.11641715765423695
+            },
+            "G": {
+              "phase_rmse": 0.00338761314133106,
+              "phase_mae": 0.0014682812877834478,
+              "phase_maxabs": 0.018233203265677456,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0014244372774068759,
+              "interior_curv_bound_max": 1.714296043281345e-14,
+              "interior_struct_bound_max": 0.015440036100668115,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0069362606357442,
+              "drift_block_rmse": 0.00374623459450542,
+              "meas_drift_absmean": 0.15639354130060823,
+              "pred_drift_absmean": 0.15528428102842623
+            },
+            "B": {
+              "phase_rmse": 0.003293052394891538,
+              "phase_mae": 0.001454503010990637,
+              "phase_maxabs": 0.017306819265125062,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0014244372774042668,
+              "interior_curv_bound_max": 3.045183153257571e-14,
+              "interior_struct_bound_max": 0.015440036100680437,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0045538042991164,
+              "drift_block_rmse": 0.002217837526427938,
+              "meas_drift_absmean": 0.13684434863803274,
+              "pred_drift_absmean": 0.13606620460687088
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.017445310115307092,
+          "phase_mae": 0.013507400429702152,
+          "phase_maxabs": 0.0657146194781291,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.45526628019999293,
+            "G": 0.6070217069332671,
+            "B": 0.5311439935666442
+          },
+          "resid_rms": {
+            "R": 0.16128177631402257,
+            "G": 0.21504236841869506,
+            "B": 0.1881620723663606
+          },
+          "corrected_resid_max": {
+            "R": 0.14388610416216352,
+            "G": 0.18249157214023626,
+            "B": 0.1146949141980258
+          },
+          "corrected_resid_rms": {
+            "R": 0.01809511001287963,
+            "G": 0.023904825029374945,
+            "B": 0.020094374808102344
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.017422618486053365,
+              "phase_mae": 0.013492520671421667,
+              "phase_maxabs": 0.06501146901802038,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.03529587479292837,
+              "interior_curv_bound_max": 0.04467872844162291,
+              "interior_struct_bound_max": 0.1151442315317328,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0408058301985885,
+              "drift_block_rmse": 0.0132581323177252,
+              "meas_drift_absmean": 0.1172951559754569,
+              "pred_drift_absmean": 0.11253364612803146
+            },
+            "G": {
+              "phase_rmse": 0.017441117140478118,
+              "phase_mae": 0.013502282194692102,
+              "phase_maxabs": 0.06525898959126511,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.035295874792934084,
+              "interior_curv_bound_max": 0.0426229955244312,
+              "interior_struct_bound_max": 0.11514423153173034,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0401467330139869,
+              "drift_block_rmse": 0.01764330255206017,
+              "meas_drift_absmean": 0.15639354130060823,
+              "pred_drift_absmean": 0.15010858342744227
+            },
+            "B": {
+              "phase_rmse": 0.017472158797334113,
+              "phase_mae": 0.013527398422992677,
+              "phase_maxabs": 0.0657146194781291,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.035295874792922774,
+              "interior_curv_bound_max": 0.031193724983947086,
+              "interior_struct_bound_max": 0.115144231531735,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0371968464960197,
+              "drift_block_rmse": 0.015380070549070294,
+              "meas_drift_absmean": 0.13684434863803274,
+              "pred_drift_absmean": 0.13155825052333636
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.016389870201366216,
+          "phase_mae": 0.01307661695437134,
+          "phase_maxabs": 0.04415883787299857,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.5599442467789402,
+            "G": 0.7465923290386058,
+            "B": 0.6532682879087588
+          },
+          "resid_rms": {
+            "R": 0.2543084974625598,
+            "G": 0.3390779966167461,
+            "B": 0.2966932470396538
+          },
+          "corrected_resid_max": {
+            "R": 0.5052590520658953,
+            "G": 0.6736787360879362,
+            "B": 0.5894688940769868
+          },
+          "corrected_resid_rms": {
+            "R": 0.07176130114042535,
+            "G": 0.0956367591727882,
+            "B": 0.08371856937826119
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.01639007822140059,
+              "phase_mae": 0.013075459255511766,
+              "phase_maxabs": 0.04415883787299857,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.04415883787299857,
+              "interior_curv_bound_max": 1.828987969129053e-14,
+              "interior_struct_bound_max": 0.12755831552956334,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0095619055253546,
+              "drift_block_rmse": 0.005353805230693243,
+              "meas_drift_absmean": 0.21475463751062568,
+              "pred_drift_absmean": 0.21277389566460536
+            },
+            "G": {
+              "phase_rmse": 0.01639809002818792,
+              "phase_mae": 0.013088015471075541,
+              "phase_maxabs": 0.044158837872990186,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.044158837872990186,
+              "interior_curv_bound_max": 1.732725444438056e-14,
+              "interior_struct_bound_max": 0.12755831552955857,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0092725383164833,
+              "drift_block_rmse": 0.006770826855327338,
+              "meas_drift_absmean": 0.2863395166808335,
+              "pred_drift_absmean": 0.2837746899549656
+            },
+            "B": {
+              "phase_rmse": 0.016381438122970476,
+              "phase_mae": 0.013066376136526718,
+              "phase_maxabs": 0.04415883787299485,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.04415883787299485,
+              "interior_curv_bound_max": 2.5965417562350414e-14,
+              "interior_struct_bound_max": 0.12755831552956232,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0085655068761556,
+              "drift_block_rmse": 0.005505908331022938,
+              "meas_drift_absmean": 0.2505470770957302,
+              "pred_drift_absmean": 0.24841759002106314
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.2568228045689866,
+          "phase_mae": 0.21476240081918377,
+          "phase_maxabs": 0.620820531342575,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.5599442467789402,
+            "G": 0.7465923290386058,
+            "B": 0.6532682879087588
+          },
+          "resid_rms": {
+            "R": 0.2543084974625598,
+            "G": 0.3390779966167461,
+            "B": 0.2966932470396538
+          },
+          "corrected_resid_max": {
+            "R": 0.6814732036587685,
+            "G": 0.908630938211644,
+            "B": 0.7950520709350997
+          },
+          "corrected_resid_rms": {
+            "R": 0.2234182975458972,
+            "G": 0.2978489990570502,
+            "B": 0.2604419183510988
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.25683703483697995,
+              "phase_mae": 0.21478718213943648,
+              "phase_maxabs": 0.6208205313425746,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6208205313425746,
+              "interior_curv_bound_max": 0.04371275506939628,
+              "interior_struct_bound_max": 0.6697850280599941,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2490437882116456,
+              "drift_block_rmse": 0.21751722839553073,
+              "meas_drift_absmean": 0.21475463751062568,
+              "pred_drift_absmean": 0.07815761868686015
+            },
+            "G": {
+              "phase_rmse": 0.256829517082435,
+              "phase_mae": 0.21477436707289738,
+              "phase_maxabs": 0.620820531342575,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.620820531342575,
+              "interior_curv_bound_max": 0.041701467984219524,
+              "interior_struct_bound_max": 0.6697850280599932,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2486969910749266,
+              "drift_block_rmse": 0.28997163227191974,
+              "meas_drift_absmean": 0.2863395166808335,
+              "pred_drift_absmean": 0.10428182499066627
+            },
+            "B": {
+              "phase_rmse": 0.2568018604515762,
+              "phase_mae": 0.21472565324521753,
+              "phase_maxabs": 0.6208205313425729,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6208205313425729,
+              "interior_curv_bound_max": 0.041769654037123634,
+              "interior_struct_bound_max": 0.6697850280599918,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.2474893742528805,
+              "drift_block_rmse": 0.2534917015359503,
+              "meas_drift_absmean": 0.2505470770957302,
+              "pred_drift_absmean": 0.09153054080943726
+            }
+          }
+        }
+      }
+    },
+    "B_smooth": {
+      "bilinear": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.016260631267041893,
+          "phase_mae": 0.003393543275453824,
+          "phase_maxabs": 0.3923117668391061,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.7529774423011872,
+            "G": 1.4002597253492013,
+            "B": 1.3889637070437288
+          },
+          "resid_rms": {
+            "R": 0.2318371095637437,
+            "G": 0.42315644667606767,
+            "B": 0.368818871107427
+          },
+          "corrected_resid_max": {
+            "R": 0.412881470447644,
+            "G": 0.6615861465697606,
+            "B": 0.18396106338376228
+          },
+          "corrected_resid_rms": {
+            "R": 0.028027352791770148,
+            "G": 0.04903563809102559,
+            "B": 0.019201888263327863
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.027716730119165058,
+              "phase_mae": 0.0053934055674784,
+              "phase_maxabs": 0.3923117668391061,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.009158499565089295,
+              "interior_curv_bound_max": 0.06667609199928728,
+              "interior_struct_bound_max": 0.018774488978945125,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0194232961872605,
+              "drift_block_rmse": 0.017385914606937544,
+              "meas_drift_absmean": 0.16126426187101114,
+              "pred_drift_absmean": 0.15741186490664244
+            },
+            "G": {
+              "phase_rmse": 0.004275223229993256,
+              "phase_mae": 0.0028482812654863406,
+              "phase_maxabs": 0.019351328799365908,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.00807145466709519,
+              "interior_curv_bound_max": 0.02763724333295648,
+              "interior_struct_bound_max": 0.01734680188703967,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0267954356133633,
+              "drift_block_rmse": 0.027696831589461537,
+              "meas_drift_absmean": 0.28850695535554444,
+              "pred_drift_absmean": 0.28158647226033806
+            },
+            "B": {
+              "phase_rmse": 0.0025941714367395947,
+              "phase_mae": 0.0019389429933967326,
+              "phase_maxabs": 0.008967249907695457,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.006984965331132742,
+              "interior_curv_bound_max": 0.020752832199509602,
+              "interior_struct_bound_max": 0.02726912382368126,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0003218043232338,
+              "drift_block_rmse": 0.00516891786223104,
+              "meas_drift_absmean": 0.22916693130415472,
+              "pred_drift_absmean": 0.22808012593237284
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.02702511772977187,
+          "phase_mae": 0.02080307430600691,
+          "phase_maxabs": 0.081890578095414,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.7529774423011872,
+            "G": 1.4002597253492013,
+            "B": 1.3889637070437288
+          },
+          "resid_rms": {
+            "R": 0.2318371095637437,
+            "G": 0.42315644667606767,
+            "B": 0.368818871107427
+          },
+          "corrected_resid_max": {
+            "R": 0.4133721625851763,
+            "G": 0.6703844146521192,
+            "B": 0.15817556820725542
+          },
+          "corrected_resid_rms": {
+            "R": 0.040147834869946955,
+            "G": 0.07990995642397944,
+            "B": 0.0391908218735879
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.02703573510608687,
+              "phase_mae": 0.020693141337286024,
+              "phase_maxabs": 0.07669551580468834,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.07669551580468834,
+              "interior_curv_bound_max": 0.14680872374881324,
+              "interior_struct_bound_max": 0.22053594710423352,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0731642992254886,
+              "drift_block_rmse": 0.03507443268983497,
+              "meas_drift_absmean": 0.16126426187101114,
+              "pred_drift_absmean": 0.15176218610618608
+            },
+            "G": {
+              "phase_rmse": 0.02977771579595487,
+              "phase_mae": 0.022721514321678533,
+              "phase_maxabs": 0.081890578095414,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.081890578095414,
+              "interior_curv_bound_max": 0.11230343835387839,
+              "interior_struct_bound_max": 0.17838027670674406,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.081223114465503,
+              "drift_block_rmse": 0.07155315947399536,
+              "meas_drift_absmean": 0.28850695535554444,
+              "pred_drift_absmean": 0.2731276183710591
+            },
+            "B": {
+              "phase_rmse": 0.0239463490781566,
+              "phase_mae": 0.018994567259056176,
+              "phase_maxabs": 0.07160231520702942,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.0697774061281887,
+              "interior_curv_bound_max": 0.03202242147817379,
+              "interior_struct_bound_max": 0.1164073702531883,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0131272649592884,
+              "drift_block_rmse": 0.03569839193613292,
+              "meas_drift_absmean": 0.22916693130415472,
+              "pred_drift_absmean": 0.2265627645085399
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.04674930035181733,
+          "phase_mae": 0.03534574154237349,
+          "phase_maxabs": 0.2981182909649868,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.123951853488336,
+            "G": 1.9003815505519839,
+            "B": 1.3564617439968458
+          },
+          "resid_rms": {
+            "R": 0.4015496901593258,
+            "G": 0.683902796418056,
+            "B": 0.4965005151524915
+          },
+          "corrected_resid_max": {
+            "R": 0.9704930796577571,
+            "G": 1.5373062854994828,
+            "B": 1.3408399626021321
+          },
+          "corrected_resid_rms": {
+            "R": 0.12061391313379313,
+            "G": 0.1966767371741611,
+            "B": 0.1414574761789952
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.050503306363586783,
+              "phase_mae": 0.03723679729546676,
+              "phase_maxabs": 0.2981182909649868,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.1305775711926559,
+              "interior_curv_bound_max": 0.059819264847083053,
+              "interior_struct_bound_max": 0.18618553114266845,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0228784089180107,
+              "drift_block_rmse": 0.023506671859864343,
+              "meas_drift_absmean": 0.2967679004419497,
+              "pred_drift_absmean": 0.2890401343491882
+            },
+            "G": {
+              "phase_rmse": 0.044057918111359326,
+              "phase_mae": 0.034005862874298035,
+              "phase_maxabs": 0.17914897761506532,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.17914897761506532,
+              "interior_curv_bound_max": 0.04164288897952191,
+              "interior_struct_bound_max": 0.23826900006058924,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.023066137433557,
+              "drift_block_rmse": 0.04092004253028449,
+              "meas_drift_absmean": 0.5051026652902836,
+              "pred_drift_absmean": 0.4900017175551906
+            },
+            "B": {
+              "phase_rmse": 0.04544014907756945,
+              "phase_mae": 0.03479456445735569,
+              "phase_maxabs": 0.163423410046418,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.163423410046418,
+              "interior_curv_bound_max": 0.044187244906075375,
+              "interior_struct_bound_max": 0.21509305924631061,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0035055716730257,
+              "drift_block_rmse": 0.012519717704128285,
+              "meas_drift_absmean": 0.36193623927118096,
+              "pred_drift_absmean": 0.35775238781108404
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.2658408210406136,
+          "phase_mae": 0.22074557804586706,
+          "phase_maxabs": 0.6591013073941923,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.123951853488336,
+            "G": 1.9003815505519839,
+            "B": 1.3564617439968458
+          },
+          "resid_rms": {
+            "R": 0.4015496901593258,
+            "G": 0.683902796418056,
+            "B": 0.4965005151524915
+          },
+          "corrected_resid_max": {
+            "R": 1.3051896723022196,
+            "G": 2.053774035877197,
+            "B": 1.5533256698568465
+          },
+          "corrected_resid_rms": {
+            "R": 0.33379877632288374,
+            "G": 0.5648861750081435,
+            "B": 0.42085807914255385
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.26795555784392777,
+              "phase_mae": 0.22317726153548667,
+              "phase_maxabs": 0.5896203727243781,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.5896203727243781,
+              "interior_curv_bound_max": 0.07355090827503467,
+              "interior_struct_bound_max": 0.66304982069658,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.175716882730243,
+              "drift_block_rmse": 0.323575155298385,
+              "meas_drift_absmean": 0.2967679004419497,
+              "pred_drift_absmean": 0.13574866388824147
+            },
+            "G": {
+              "phase_rmse": 0.2624417983758347,
+              "phase_mae": 0.21496649251043332,
+              "phase_maxabs": 0.6591013073941923,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6506004040885238,
+              "interior_curv_bound_max": 0.10371341229413931,
+              "interior_struct_bound_max": 0.7190806956613692,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1580790629367659,
+              "drift_block_rmse": 0.5440294920408333,
+              "meas_drift_absmean": 0.5051026652902836,
+              "pred_drift_absmean": 0.24019570080992209
+            },
+            "B": {
+              "phase_rmse": 0.2670920213717545,
+              "phase_mae": 0.22409298009168122,
+              "phase_maxabs": 0.6026166100435808,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6026166100435808,
+              "interior_curv_bound_max": 0.08195252609074176,
+              "interior_struct_bound_max": 0.6444262393736364,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1432037619808524,
+              "drift_block_rmse": 0.40673356725648063,
+              "meas_drift_absmean": 0.36193623927118096,
+              "pred_drift_absmean": 0.15692030814983166
+            }
+          }
+        }
+      },
+      "bicubic": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.015265946655764216,
+          "phase_mae": 0.002124495164721822,
+          "phase_maxabs": 0.3682141174086568,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.7723242652944293,
+            "G": 1.4336910717338753,
+            "B": 1.39848356797944
+          },
+          "resid_rms": {
+            "R": 0.2327717915998537,
+            "G": 0.42527320466095025,
+            "B": 0.3698364746440378
+          },
+          "corrected_resid_max": {
+            "R": 0.5390695608930969,
+            "G": 0.8929231069239165,
+            "B": 0.21371217608106008
+          },
+          "corrected_resid_rms": {
+            "R": 0.030290562155058025,
+            "G": 0.058048932968322545,
+            "B": 0.01890533346566486
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.026358402396399926,
+              "phase_mae": 0.004309768863487897,
+              "phase_maxabs": 0.3682141174086568,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.008108584990689727,
+              "interior_curv_bound_max": 0.06667609199929159,
+              "interior_struct_bound_max": 0.017493518549167954,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0190572847503407,
+              "drift_block_rmse": 0.017192603108309907,
+              "meas_drift_absmean": 0.16186624023234714,
+              "pred_drift_absmean": 0.15806372085056059
+            },
+            "G": {
+              "phase_rmse": 0.001752565939002121,
+              "phase_mae": 0.0012192863101071726,
+              "phase_maxabs": 0.007279694447515306,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.003713633307600786,
+              "interior_curv_bound_max": 0.027639632411854468,
+              "interior_struct_bound_max": 0.01504499439548592,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0265437361060294,
+              "drift_block_rmse": 0.02806026984273394,
+              "meas_drift_absmean": 0.2898637770592054,
+              "pred_drift_absmean": 0.28291112262740653
+            },
+            "B": {
+              "phase_rmse": 0.001144778419094334,
+              "phase_mae": 0.000844430320570396,
+              "phase_maxabs": 0.004175486993483246,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.003187295980780047,
+              "interior_curv_bound_max": 0.02075409674270334,
+              "interior_struct_bound_max": 0.0228185713979795,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0005282591583418,
+              "drift_block_rmse": 0.005221691076309375,
+              "meas_drift_absmean": 0.22976193535694647,
+              "pred_drift_absmean": 0.22871506421141694
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.026360075037696724,
+          "phase_mae": 0.020177207597491118,
+          "phase_maxabs": 0.08006153117057513,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 0.7723242652944293,
+            "G": 1.4336910717338753,
+            "B": 1.39848356797944
+          },
+          "resid_rms": {
+            "R": 0.2327717915998537,
+            "G": 0.42527320466095025,
+            "B": 0.3698364746440378
+          },
+          "corrected_resid_max": {
+            "R": 0.5419410225154877,
+            "G": 0.8972328969607304,
+            "B": 0.2124424536044387
+          },
+          "corrected_resid_rms": {
+            "R": 0.04384603665152214,
+            "G": 0.08890081229015662,
+            "B": 0.040315655771535425
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.026524269588724305,
+              "phase_mae": 0.020285980323971237,
+              "phase_maxabs": 0.07410634866786886,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.07410634866786886,
+              "interior_curv_bound_max": 0.172556761266585,
+              "interior_struct_bound_max": 0.21823540782042744,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.073883129861607,
+              "drift_block_rmse": 0.03510824090127706,
+              "meas_drift_absmean": 0.16186624023234714,
+              "pred_drift_absmean": 0.1521514401591789
+            },
+            "G": {
+              "phase_rmse": 0.029086035991622357,
+              "phase_mae": 0.02207292619729611,
+              "phase_maxabs": 0.08006153117057513,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.08006153117057513,
+              "interior_curv_bound_max": 0.1316076247832316,
+              "interior_struct_bound_max": 0.1780560282555033,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0822051662378125,
+              "drift_block_rmse": 0.0721405846877686,
+              "meas_drift_absmean": 0.2898637770592054,
+              "pred_drift_absmean": 0.2738241758557849
+            },
+            "B": {
+              "phase_rmse": 0.023130635552395213,
+              "phase_mae": 0.018172716271206,
+              "phase_maxabs": 0.07096707000030511,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.06841247999474293,
+              "interior_curv_bound_max": 0.03804089403266099,
+              "interior_struct_bound_max": 0.11712139844524369,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0134627075755163,
+              "drift_block_rmse": 0.0362339908842131,
+              "meas_drift_absmean": 0.22976193535694647,
+              "pred_drift_absmean": 0.22710794237826712
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.02537724291434154,
+          "phase_mae": 0.017071218890272518,
+          "phase_maxabs": 0.2742037049718362,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.3725676503699304,
+            "G": 2.2239911894797615,
+            "B": 1.6602523346483054
+          },
+          "resid_rms": {
+            "R": 0.42636351307599224,
+            "G": 0.7255165247157859,
+            "B": 0.528170519102185
+          },
+          "corrected_resid_max": {
+            "R": 1.0561412021258718,
+            "G": 1.726050168126875,
+            "B": 1.4444898744120565
+          },
+          "corrected_resid_rms": {
+            "R": 0.12706205901158113,
+            "G": 0.2090212063195636,
+            "B": 0.14779176032568753
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.03195878744000513,
+              "phase_mae": 0.019127552306736677,
+              "phase_maxabs": 0.2742037049718362,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.062408434410586355,
+              "interior_curv_bound_max": 0.059819264847115125,
+              "interior_struct_bound_max": 0.1515797207773805,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0207926098387203,
+              "drift_block_rmse": 0.023737249175392765,
+              "meas_drift_absmean": 0.3166646888564108,
+              "pred_drift_absmean": 0.3092184829271992
+            },
+            "G": {
+              "phase_rmse": 0.020796530299283,
+              "phase_mae": 0.01574203810906194,
+              "phase_maxabs": 0.09086181084296452,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.09086181084296452,
+              "interior_curv_bound_max": 0.041638708543847054,
+              "interior_struct_bound_max": 0.19351363787397682,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0209497598430874,
+              "drift_block_rmse": 0.042024365998337046,
+              "meas_drift_absmean": 0.5379372339258368,
+              "pred_drift_absmean": 0.5234671357096146
+            },
+            "B": {
+              "phase_rmse": 0.021866723729815317,
+              "phase_mae": 0.016344066255018927,
+              "phase_maxabs": 0.08597508725711389,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.08597508725711389,
+              "interior_curv_bound_max": 0.04418911948985311,
+              "interior_struct_bound_max": 0.17773575801220487,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.002873537412576,
+              "drift_block_rmse": 0.012592199301550092,
+              "meas_drift_absmean": 0.386910227741601,
+              "pred_drift_absmean": 0.3834024949491529
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.26643756402695806,
+          "phase_mae": 0.2209845311136661,
+          "phase_maxabs": 0.6577453785043683,
+          "n_valid_common": 256,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.3725676503699304,
+            "G": 2.2239911894797615,
+            "B": 1.6602523346483054
+          },
+          "resid_rms": {
+            "R": 0.42636351307599224,
+            "G": 0.7255165247157859,
+            "B": 0.528170519102185
+          },
+          "corrected_resid_max": {
+            "R": 1.596149017410923,
+            "G": 2.405909504988742,
+            "B": 1.9000816005290346
+          },
+          "corrected_resid_rms": {
+            "R": 0.36546659364546574,
+            "G": 0.6195575576925685,
+            "B": 0.460229739074539
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.2686264000460285,
+              "phase_mae": 0.22343631141813775,
+              "phase_maxabs": 0.5958252154922011,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.5940657292277913,
+              "interior_curv_bound_max": 0.08669964230088457,
+              "interior_struct_bound_max": 0.680049379145712,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.165034085274853,
+              "drift_block_rmse": 0.35266424706334626,
+              "meas_drift_absmean": 0.3166646888564108,
+              "pred_drift_absmean": 0.13800102326927802
+            },
+            "G": {
+              "phase_rmse": 0.2629411399297495,
+              "phase_mae": 0.21510912915724634,
+              "phase_maxabs": 0.6577453785043683,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6513418717515597,
+              "interior_curv_bound_max": 0.12207634708961632,
+              "interior_struct_bound_max": 0.7210402999668744,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.146818456731156,
+              "drift_block_rmse": 0.5925572653700945,
+              "meas_drift_absmean": 0.5379372339258368,
+              "pred_drift_absmean": 0.24428363229885097
+            },
+            "B": {
+              "phase_rmse": 0.26771018042766526,
+              "phase_mae": 0.22440815276561418,
+              "phase_maxabs": 0.6086611142434109,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6086611142434109,
+              "interior_curv_bound_max": 0.09694787058834907,
+              "interior_struct_bound_max": 0.6579247529354811,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1313623803709005,
+              "drift_block_rmse": 0.4433660213492642,
+              "meas_drift_absmean": 0.386910227741601,
+              "pred_drift_absmean": 0.15989474575007262
+            }
+          }
+        }
+      }
+    },
+    "C_natural": {
+      "bilinear": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.1095045066830189,
+          "phase_mae": 0.03738198275462032,
+          "phase_maxabs": 0.4991801218732733,
+          "n_valid_common": 154,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.6461891527210355,
+            "G": 1.091934404117211,
+            "B": 1.0949245211438665
+          },
+          "resid_rms": {
+            "R": 0.27044836859582655,
+            "G": 0.24381316555906488,
+            "B": 0.20040343622311485
+          },
+          "corrected_resid_max": {
+            "R": 0.2509870257288327,
+            "G": 1.166706847949797,
+            "B": 0.13875045360200033
+          },
+          "corrected_resid_rms": {
+            "R": 0.01701386891767356,
+            "G": 0.06673508005477155,
+            "B": 0.01176655851969682
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.021602099181051156,
+              "phase_mae": 0.0066367327973134195,
+              "phase_maxabs": 0.2403187164873116,
+              "n_valid": 235,
+              "interior_phase_maxabs": 0.04644563485513803,
+              "interior_curv_bound_max": 0.06567496391674914,
+              "interior_struct_bound_max": 0.06877706962805864,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0026382768944124,
+              "drift_block_rmse": 0.005078436697552134,
+              "meas_drift_absmean": 0.14416516666272067,
+              "pred_drift_absmean": 0.14310615280085565
+            },
+            "G": {
+              "phase_rmse": 0.0995157427959267,
+              "phase_mae": 0.03138463953238278,
+              "phase_maxabs": 0.4640652956499651,
+              "n_valid": 255,
+              "interior_phase_maxabs": 0.4640652956499651,
+              "interior_curv_bound_max": 0.5405587112662369,
+              "interior_struct_bound_max": 0.4695102566985435,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0167828919747184,
+              "drift_block_rmse": 0.05991604945435401,
+              "meas_drift_absmean": 0.1383444079698578,
+              "pred_drift_absmean": 0.12481181645138918
+            },
+            "B": {
+              "phase_rmse": 0.13060124946136556,
+              "phase_mae": 0.05003677724252143,
+              "phase_maxabs": 0.4991801218732733,
+              "n_valid": 172,
+              "interior_phase_maxabs": 0.4991801218732733,
+              "interior_curv_bound_max": 0.9934284953823315,
+              "interior_struct_bound_max": 0.4994817510049995,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0015257403975424,
+              "drift_block_rmse": 0.005679825395278335,
+              "meas_drift_absmean": 0.12684175058717412,
+              "pred_drift_absmean": 0.12541848379482065
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.11540881698109424,
+          "phase_mae": 0.06045773339187605,
+          "phase_maxabs": 0.4996919520302469,
+          "n_valid_common": 192,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.6461891527210355,
+            "G": 1.091934404117211,
+            "B": 1.0949245211438665
+          },
+          "resid_rms": {
+            "R": 0.27044836859582655,
+            "G": 0.24381316555906488,
+            "B": 0.20040343622311485
+          },
+          "corrected_resid_max": {
+            "R": 0.25335826128969074,
+            "G": 0.7861190927358734,
+            "B": 0.19007059737546683
+          },
+          "corrected_resid_rms": {
+            "R": 0.0404631243503913,
+            "G": 0.09168013881026912,
+            "B": 0.031368879485845255
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.039623163217877296,
+              "phase_mae": 0.029311885996334074,
+              "phase_maxabs": 0.12186776463152298,
+              "n_valid": 249,
+              "interior_phase_maxabs": 0.11091333042497864,
+              "interior_curv_bound_max": 0.0670342382720095,
+              "interior_struct_bound_max": 0.13527236408632198,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.022141230027461,
+              "drift_block_rmse": 0.03884198533316541,
+              "meas_drift_absmean": 0.13607779948325474,
+              "pred_drift_absmean": 0.13069517512602324
+            },
+            "G": {
+              "phase_rmse": 0.11263596040162846,
+              "phase_mae": 0.055266266457705764,
+              "phase_maxabs": 0.4829676840386599,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.4829676840386599,
+              "interior_curv_bound_max": 0.6874510126016151,
+              "interior_struct_bound_max": 0.49053266528350153,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.100804197058439,
+              "drift_block_rmse": 0.08901699806715656,
+              "meas_drift_absmean": 0.1378041537226267,
+              "pred_drift_absmean": 0.11135123814373772
+            },
+            "B": {
+              "phase_rmse": 0.14414763662702154,
+              "phase_mae": 0.08235910672513339,
+              "phase_maxabs": 0.4996919520302469,
+              "n_valid": 199,
+              "interior_phase_maxabs": 0.4996919520302469,
+              "interior_curv_bound_max": 0.9139536797679116,
+              "interior_struct_bound_max": 0.4998350836257838,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0043691225456188,
+              "drift_block_rmse": 0.03286023966734439,
+              "meas_drift_absmean": 0.1096656484026147,
+              "pred_drift_absmean": 0.1107057334217935
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.10538738798022416,
+          "phase_mae": 0.06046301513987922,
+          "phase_maxabs": 0.4893202486412822,
+          "n_valid_common": 154,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.66137846832531,
+            "G": 1.5952347877728243,
+            "B": 1.5710503171902133
+          },
+          "resid_rms": {
+            "R": 0.37802048321173604,
+            "G": 0.3688460623061765,
+            "B": 0.2669960233831783
+          },
+          "corrected_resid_max": {
+            "R": 1.540677964833975,
+            "G": 1.2440217679646253,
+            "B": 1.5955870086691561
+          },
+          "corrected_resid_rms": {
+            "R": 0.10628760255342469,
+            "G": 0.10763320377832385,
+            "B": 0.07463337462811118
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.05903199353646294,
+              "phase_mae": 0.04269728164230743,
+              "phase_maxabs": 0.2828054499111013,
+              "n_valid": 235,
+              "interior_phase_maxabs": 0.17580869927844178,
+              "interior_curv_bound_max": 0.08632314597533716,
+              "interior_struct_bound_max": 0.24857195971121104,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0058600417750974,
+              "drift_block_rmse": 0.010022525659844593,
+              "meas_drift_absmean": 0.24558479144399245,
+              "pred_drift_absmean": 0.24230777892837127
+            },
+            "G": {
+              "phase_rmse": 0.1046974483019646,
+              "phase_mae": 0.06118634808690248,
+              "phase_maxabs": 0.48864321035436253,
+              "n_valid": 255,
+              "interior_phase_maxabs": 0.38252041767007466,
+              "interior_curv_bound_max": 0.4507157238071531,
+              "interior_struct_bound_max": 0.41646150998185355,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0046754573138665,
+              "drift_block_rmse": 0.036372748472928415,
+              "meas_drift_absmean": 0.2268192203310845,
+              "pred_drift_absmean": 0.21752092202521195
+            },
+            "B": {
+              "phase_rmse": 0.12009198954116804,
+              "phase_mae": 0.07051211356025713,
+              "phase_maxabs": 0.4893202486412822,
+              "n_valid": 172,
+              "interior_phase_maxabs": 0.46115541592402043,
+              "interior_curv_bound_max": 0.4952469360596778,
+              "interior_struct_bound_max": 0.4613452992586925,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0065504790375412,
+              "drift_block_rmse": 0.0109602473738173,
+              "meas_drift_absmean": 0.17512231207245638,
+              "pred_drift_absmean": 0.1718651639239258
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.2813646383554183,
+          "phase_mae": 0.23205589214238012,
+          "phase_maxabs": 0.774795468145219,
+          "n_valid_common": 192,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.66137846832531,
+            "G": 1.5952347877728243,
+            "B": 1.5710503171902133
+          },
+          "resid_rms": {
+            "R": 0.37802048321173604,
+            "G": 0.3688460623061765,
+            "B": 0.2669960233831783
+          },
+          "corrected_resid_max": {
+            "R": 1.9248051035395406,
+            "G": 1.569992942839093,
+            "B": 1.704109519494807
+          },
+          "corrected_resid_rms": {
+            "R": 0.33902494841586867,
+            "G": 0.30139838143932873,
+            "B": 0.2338239540238388
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.2790743471520142,
+              "phase_mae": 0.23021618166181873,
+              "phase_maxabs": 0.7246984077896087,
+              "n_valid": 249,
+              "interior_phase_maxabs": 0.7246984077896087,
+              "interior_curv_bound_max": 0.13402182833185544,
+              "interior_struct_bound_max": 0.7848722494712631,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 0.9349480206765913,
+              "drift_block_rmse": 0.3304196409908555,
+              "meas_drift_absmean": 0.2318303591059825,
+              "pred_drift_absmean": 0.11007275905599034
+            },
+            "G": {
+              "phase_rmse": 0.282852506632726,
+              "phase_mae": 0.23452042325469394,
+              "phase_maxabs": 0.678021994321497,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.678021994321497,
+              "interior_curv_bound_max": 0.48432567220209644,
+              "interior_struct_bound_max": 0.7361185661269257,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1193841677734548,
+              "drift_block_rmse": 0.2896106524202782,
+              "meas_drift_absmean": 0.22593325044820678,
+              "pred_drift_absmean": 0.10318395983950586
+            },
+            "B": {
+              "phase_rmse": 0.29073838236565175,
+              "phase_mae": 0.24242267575239598,
+              "phase_maxabs": 0.774795468145219,
+              "n_valid": 199,
+              "interior_phase_maxabs": 0.774795468145219,
+              "interior_curv_bound_max": 1.2270384938212668,
+              "interior_struct_bound_max": 0.8187258729511608,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 0.9680473031081275,
+              "drift_block_rmse": 0.2559410303236911,
+              "meas_drift_absmean": 0.1515086039395436,
+              "pred_drift_absmean": 0.07385017244369561
+            }
+          }
+        }
+      },
+      "bicubic": {
+        "smooth_W4_8x8": {
+          "phase_rmse": 0.11041013903304285,
+          "phase_mae": 0.03659956227947559,
+          "phase_maxabs": 0.4995007673689965,
+          "n_valid_common": 154,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.6745502059310837,
+            "G": 1.124181155439345,
+            "B": 1.1209448410011191
+          },
+          "resid_rms": {
+            "R": 0.2721624834969469,
+            "G": 0.24498805705984972,
+            "B": 0.20117026598752202
+          },
+          "corrected_resid_max": {
+            "R": 0.2240783295837332,
+            "G": 1.3384872259646272,
+            "B": 0.15255187920210744
+          },
+          "corrected_resid_rms": {
+            "R": 0.016732984172069247,
+            "G": 0.07082584638705472,
+            "B": 0.011131454179987078
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.020711635140618863,
+              "phase_mae": 0.005409464140810287,
+              "phase_maxabs": 0.2292775526827569,
+              "n_valid": 235,
+              "interior_phase_maxabs": 0.04436353249755953,
+              "interior_curv_bound_max": 0.06572611652537261,
+              "interior_struct_bound_max": 0.06695774231246263,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0025433906310188,
+              "drift_block_rmse": 0.004760021755505771,
+              "meas_drift_absmean": 0.14493540893998585,
+              "pred_drift_absmean": 0.14393701589035168
+            },
+            "G": {
+              "phase_rmse": 0.10145368246409571,
+              "phase_mae": 0.03118693514229361,
+              "phase_maxabs": 0.46492011411621353,
+              "n_valid": 255,
+              "interior_phase_maxabs": 0.46492011411621353,
+              "interior_curv_bound_max": 0.6313833203939596,
+              "interior_struct_bound_max": 0.4785563234749514,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0127701290082063,
+              "drift_block_rmse": 0.06405988864987618,
+              "meas_drift_absmean": 0.13896602212289086,
+              "pred_drift_absmean": 0.12487712489595644
+            },
+            "B": {
+              "phase_rmse": 0.1305935660428476,
+              "phase_mae": 0.04891046004513094,
+              "phase_maxabs": 0.4995007673689965,
+              "n_valid": 172,
+              "interior_phase_maxabs": 0.4995007673689965,
+              "interior_curv_bound_max": 1.340600303263666,
+              "interior_struct_bound_max": 0.49967648607613235,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.001635373688282,
+              "drift_block_rmse": 0.005621904220846248,
+              "meas_drift_absmean": 0.12715811191709722,
+              "pred_drift_absmean": 0.12569210786039506
+            }
+          }
+        },
+        "smooth_W8_16x16": {
+          "phase_rmse": 0.11686123893286623,
+          "phase_mae": 0.060536100879292856,
+          "phase_maxabs": 0.4998385655170434,
+          "n_valid_common": 192,
+          "n_total": 256,
+          "resid_max": {
+            "R": 1.6745502059310837,
+            "G": 1.124181155439345,
+            "B": 1.1209448410011191
+          },
+          "resid_rms": {
+            "R": 0.2721624834969469,
+            "G": 0.24498805705984972,
+            "B": 0.20117026598752202
+          },
+          "corrected_resid_max": {
+            "R": 0.29027430582583236,
+            "G": 0.8329268904527396,
+            "B": 0.20179548715422868
+          },
+          "corrected_resid_rms": {
+            "R": 0.04219146250340653,
+            "G": 0.0981769912975687,
+            "B": 0.03304716869183717
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.038673943619518196,
+              "phase_mae": 0.028619910253536388,
+              "phase_maxabs": 0.11791737731077627,
+              "n_valid": 249,
+              "interior_phase_maxabs": 0.10934746465544848,
+              "interior_curv_bound_max": 0.06713428945716833,
+              "interior_struct_bound_max": 0.1337265883904255,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0224360047601377,
+              "drift_block_rmse": 0.039523542908113184,
+              "meas_drift_absmean": 0.13680380457479438,
+              "pred_drift_absmean": 0.13146911994153238
+            },
+            "G": {
+              "phase_rmse": 0.11523361612617097,
+              "phase_mae": 0.05599855028747848,
+              "phase_maxabs": 0.490855516198334,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.490855516198334,
+              "interior_curv_bound_max": 0.8849016324678195,
+              "interior_struct_bound_max": 0.4949646429607433,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1030578294618603,
+              "drift_block_rmse": 0.09541257707205582,
+              "meas_drift_absmean": 0.13842332533204155,
+              "pred_drift_absmean": 0.11017749761297338
+            },
+            "B": {
+              "phase_rmse": 0.1451164677230005,
+              "phase_mae": 0.0820909221634523,
+              "phase_maxabs": 0.4998385655170434,
+              "n_valid": 199,
+              "interior_phase_maxabs": 0.4998385655170434,
+              "interior_curv_bound_max": 1.0809436986895304,
+              "interior_struct_bound_max": 0.49991377673388276,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0046217328547888,
+              "drift_block_rmse": 0.03357115375812293,
+              "meas_drift_absmean": 0.10993925649777395,
+              "pred_drift_absmean": 0.11083997719383544
+            }
+          }
+        },
+        "iid_W4_8x8": {
+          "phase_rmse": 0.09852643655876313,
+          "phase_mae": 0.043812558420136906,
+          "phase_maxabs": 0.48931409305085793,
+          "n_valid_common": 154,
+          "n_total": 256,
+          "resid_max": {
+            "R": 2.012769187855895,
+            "G": 1.8362831866702436,
+            "B": 1.7992487834056305
+          },
+          "resid_rms": {
+            "R": 0.4042486908557202,
+            "G": 0.39116563038964886,
+            "B": 0.28349754757816475
+          },
+          "corrected_resid_max": {
+            "R": 1.7152037665211708,
+            "G": 1.4052561065915654,
+            "B": 1.7608811873559773
+          },
+          "corrected_resid_rms": {
+            "R": 0.11150313275365756,
+            "G": 0.11338811481691033,
+            "B": 0.07869037366214959
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.040743272466292516,
+              "phase_mae": 0.023264806920846783,
+              "phase_maxabs": 0.27651329558429255,
+              "n_valid": 235,
+              "interior_phase_maxabs": 0.10820011201167296,
+              "interior_curv_bound_max": 0.08629711857570567,
+              "interior_struct_bound_max": 0.22147201128393196,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0040165989320262,
+              "drift_block_rmse": 0.008698601853010439,
+              "meas_drift_absmean": 0.26292079024296916,
+              "pred_drift_absmean": 0.26031396691103587
+            },
+            "G": {
+              "phase_rmse": 0.09712668069364763,
+              "phase_mae": 0.04391629341368,
+              "phase_maxabs": 0.4888307489768955,
+              "n_valid": 255,
+              "interior_phase_maxabs": 0.4069646902311606,
+              "interior_curv_bound_max": 0.5381337430923173,
+              "interior_struct_bound_max": 0.4338419748492576,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0031598124997858,
+              "drift_block_rmse": 0.042023026229186175,
+              "meas_drift_absmean": 0.24237212385714443,
+              "pred_drift_absmean": 0.232747046340886
+            },
+            "B": {
+              "phase_rmse": 0.11391140937980898,
+              "phase_mae": 0.05410963500816921,
+              "phase_maxabs": 0.48931409305085793,
+              "n_valid": 172,
+              "interior_phase_maxabs": 0.46129881226378283,
+              "interior_curv_bound_max": 0.5691561818296942,
+              "interior_struct_bound_max": 0.4614407429806508,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.0047863763503164,
+              "drift_block_rmse": 0.009785268607928617,
+              "meas_drift_absmean": 0.18535149891177874,
+              "pred_drift_absmean": 0.18244467604234976
+            }
+          }
+        },
+        "iid_W8_16x16": {
+          "phase_rmse": 0.2826084120338927,
+          "phase_mae": 0.23275778344140263,
+          "phase_maxabs": 0.7968205856954742,
+          "n_valid_common": 192,
+          "n_total": 256,
+          "resid_max": {
+            "R": 2.012769187855895,
+            "G": 1.8362831866702436,
+            "B": 1.7992487834056305
+          },
+          "resid_rms": {
+            "R": 0.4042486908557202,
+            "G": 0.39116563038964886,
+            "B": 0.28349754757816475
+          },
+          "corrected_resid_max": {
+            "R": 2.314496314493468,
+            "G": 1.926775755125277,
+            "B": 2.1183479344741443
+          },
+          "corrected_resid_rms": {
+            "R": 0.3717903020267523,
+            "G": 0.3296204425161402,
+            "B": 0.2558029626892493
+          },
+          "per_channel": {
+            "R": {
+              "phase_rmse": 0.2808505373476569,
+              "phase_mae": 0.23130902619106858,
+              "phase_maxabs": 0.7338525638103579,
+              "n_valid": 249,
+              "interior_phase_maxabs": 0.7338525638103579,
+              "interior_curv_bound_max": 0.15824201335151902,
+              "interior_struct_bound_max": 0.804442342501673,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 0.9036773770308278,
+              "drift_block_rmse": 0.3606681338659163,
+              "meas_drift_absmean": 0.24819510388046243,
+              "pred_drift_absmean": 0.11234558035147629
+            },
+            "G": {
+              "phase_rmse": 0.28416571654544315,
+              "phase_mae": 0.23536744748732222,
+              "phase_maxabs": 0.6842812742986116,
+              "n_valid": 256,
+              "interior_phase_maxabs": 0.6842812742986116,
+              "interior_curv_bound_max": 0.5861725871007899,
+              "interior_struct_bound_max": 0.7512198130927128,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 1.1120978793621692,
+              "drift_block_rmse": 0.3152352720719389,
+              "meas_drift_absmean": 0.24142551103242396,
+              "pred_drift_absmean": 0.10467661531531196
+            },
+            "B": {
+              "phase_rmse": 0.29240514054441813,
+              "phase_mae": 0.2431941214447801,
+              "phase_maxabs": 0.7968205856954742,
+              "n_valid": 199,
+              "interior_phase_maxabs": 0.7968205856954742,
+              "interior_curv_bound_max": 1.449453495680957,
+              "interior_struct_bound_max": 0.846720558875238,
+              "struct_bound_holds_interior": true,
+              "drift_pred_meas_slope": 0.934651275916658,
+              "drift_block_rmse": 0.2778566972054746,
+              "meas_drift_absmean": 0.1603597301600103,
+              "pred_drift_absmean": 0.07584341568664045
+            }
+          }
+        }
+      }
+    }
+  }
+}
