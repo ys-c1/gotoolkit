@@ -1,5 +1,5 @@
 GO ?= go
-.PHONY: all test build golden clean
+.PHONY: all test build seamcheck constraints golden clean
 
 all: test
 
@@ -9,6 +9,12 @@ test:
 
 build:
 	$(GO) build -o build/gtk ./cmd/gtk
+
+seamcheck: build
+	./build/gtk seamcheck
+
+constraints: build
+	./build/gtk constraints --fixture quadratic
 
 golden:
 	$(GO) run ./ref
